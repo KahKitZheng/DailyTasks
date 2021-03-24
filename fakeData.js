@@ -51,30 +51,4 @@ export default fakeData = [
       },
     ],
   },
-  {
-    name: "List C",
-    color: "#03fcb1",
-    todos: [
-      {
-        title: "Task 1",
-        completed: true,
-      },
-      {
-        title: "Task 2",
-        completed: false,
-      },
-      {
-        title: "Task 3",
-        completed: true,
-      },
-      {
-        title: "Task 4",
-        completed: false,
-      },
-      {
-        title: "Task 5",
-        completed: true,
-      },
-    ],
-  },
 ];
