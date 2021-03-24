@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
   listTitle: {
     fontSize: 24,
     fontWeight: "700",
+    fontFamily: "Roboto",
     color: colors.white,
     marginBottom: 18,
   },
