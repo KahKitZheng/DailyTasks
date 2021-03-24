@@ -9,9 +9,8 @@ import {
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import colors from "../utils/colors";
-import fakeData from "../fakeData";
 
-const AddListModal = ({ closeModal }) => {
+const AddListModal = ({ closeModal, addList }) => {
   const backgroundColors = [
     "#5CD859",
     "#24A6D9",
@@ -38,11 +37,9 @@ const AddListModal = ({ closeModal }) => {
   };
 
   const createTodo = () => {
-    fakeData.push({
-      name,
-      color,
-      todos: [],
-    });
+    const list = { color, name };
+
+    addList(list);
 
     setName("");
     closeModal();
