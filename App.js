@@ -15,10 +15,14 @@ import TodoList from "./components/TodoList";
 import AddListModal from "./components/AddListModal";
 
 export default function App() {
-  const [addTodoVisible, setAddTodoVisible] = useState(true);
+  const [addTodoVisible, setAddTodoVisible] = useState(false);
 
   const toggleAddTodoModal = () => {
     setAddTodoVisible(!addTodoVisible);
+  };
+
+  const renderList = (list) => {
+    return <TodoList list={list} />;
   };
 
   return (
@@ -55,7 +59,7 @@ export default function App() {
           keyExtractor={(item) => item.name}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
-          renderItem={({ item }) => <TodoList list={item} />}
+          renderItem={({ item }) => renderList(item)}
         />
       </View>
 
