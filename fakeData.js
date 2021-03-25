@@ -1,5 +1,6 @@
-export default fakeData = [
+const fakeData = [
   {
+    id: 1,
     name: "List A",
     color: "#24A6D9",
     todos: [
@@ -26,6 +27,7 @@ export default fakeData = [
     ],
   },
   {
+    id: 2,
     name: "List B",
     color: "#8022D9",
     todos: [
@@ -52,3 +54,5 @@ export default fakeData = [
     ],
   },
 ];
+
+export default fakeData;

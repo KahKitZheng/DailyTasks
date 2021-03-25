@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Modal } from "react-native";
 import colors from "../utils/colors";
 import TodoModal from "./TodoModal";
 
-export default TodoList = ({ list }) => {
+const TodoList = ({ list, updateList }) => {
   const [showListVisible, setShowListVisible] = useState(false);
 
   const completedCount = list.todos.filter((todo) => todo.completed).length;
@@ -20,7 +20,11 @@ export default TodoList = ({ list }) => {
         visible={showListVisible}
         onRequestClose={() => toggleListModal()}
       >
-        <TodoModal list={list} closeModal={() => toggleListModal()} />
+        <TodoModal
+          list={list}
+          closeModal={() => toggleListModal()}
+          updateList={updateList}
+        />
       </Modal>
       <TouchableOpacity
         style={[styles.listContainer, { backgroundColor: list.color }]}
@@ -72,3 +76,5 @@ const styles = StyleSheet.create({
     color: colors.white,
   },
 });
+
+export default TodoList;

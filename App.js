@@ -14,7 +14,7 @@ import fakeData from "./fakeData";
 import TodoList from "./components/TodoList";
 import AddListModal from "./components/AddListModal";
 
-export default function App() {
+const App = () => {
   const [addTodoVisible, setAddTodoVisible] = useState(false);
   const [lists, setLists] = useState(fakeData);
 
@@ -23,11 +23,19 @@ export default function App() {
   };
 
   const renderList = (list) => {
-    return <TodoList list={list} />;
+    return <TodoList list={list} updateList={updateList} />;
   };
 
   const addList = (list) => {
     setLists([...lists, { ...list, id: lists.length + 1, todos: [] }]);
+  };
+
+  const updateList = (list) => {
+    setLists(
+      lists.map((item) => {
+        return item.id === list.id ? list : item;
+      })
+    );
   };
 
   return (
@@ -70,13 +78,14 @@ export default function App() {
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => renderList(item)}
+          keyboardShouldPersistTaps="always"
         />
       </View>
 
       <StatusBar style="auto" />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -112,3 +121,5 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
 });
+
+export default App;
