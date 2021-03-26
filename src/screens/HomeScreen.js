@@ -11,8 +11,8 @@ import { StatusBar } from "expo-status-bar";
 import { AntDesign } from "@expo/vector-icons";
 import colors from "../utils/colors";
 import fakeData from "../fakeData";
-import TodoList from "../components/TodoList";
-import AddListModal from "../components/AddListModal";
+import TodoList from "../src/components/TodoList";
+import AddListModal from "../src/components/AddListModal";
 import { AuthContext } from "../App";
 
 const HomeScreen = () => {

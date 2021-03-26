@@ -10,9 +10,9 @@ import firebaseConfig from "./firebaseConfig";
 import { LogBox } from "react-native";
 
 // Import Screens
-import SignInScreen from "./screens/SignInScreen";
-import SignUpScreen from "./screens/SignUpScreen";
-import HomeScreen from "./screens/HomeScreen";
+import SignInScreen from "./src/screens/SignInScreen";
+import SignUpScreen from "./src/screens/SignUpScreen";
+import HomeScreen from "./src/screens/HomeScreen";
 
 LogBox.ignoreLogs(["Setting a timer"]);
 

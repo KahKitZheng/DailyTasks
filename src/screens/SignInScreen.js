@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import colors from "../utils/colors";
-import { AuthContext } from "../App";
+import { AuthContext } from "../../App";
 
 const SignInScreen = ({ navigation }) => {
   const { signIn } = useContext(AuthContext);
