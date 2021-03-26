@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -13,10 +13,13 @@ import colors from "../utils/colors";
 import fakeData from "../fakeData";
 import TodoList from "../components/TodoList";
 import AddListModal from "../components/AddListModal";
+import { AuthContext } from "../App";
 
 const HomeScreen = () => {
   const [addTodoVisible, setAddTodoVisible] = useState(false);
   const [lists, setLists] = useState(fakeData);
+
+  const { signOut } = useContext(AuthContext);
 
   const toggleAddTodoModal = () => {
     setAddTodoVisible(!addTodoVisible);
@@ -59,6 +62,10 @@ const HomeScreen = () => {
         <View style={styles.divider} />
       </View>
 
+      <TouchableOpacity onPress={signOut}>
+        <Text style={styles.link}>sign out</Text>
+      </TouchableOpacity>
+
       <View style={{ marginVertical: 48 }}>
         <TouchableOpacity
           style={styles.addList}
@@ -70,8 +77,6 @@ const HomeScreen = () => {
       </View>
 
       <View style={{ height: 275, paddingLeft: 32 }}>
-        {console.log(lists)}
-
         <FlatList
           data={lists}
           keyExtractor={(item) => item.name}
@@ -119,6 +124,11 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 14,
     marginTop: 8,
+  },
+  link: {
+    color: colors.blue,
+    fontWeight: "700",
+    fontFamily: "Roboto",
   },
 });
 

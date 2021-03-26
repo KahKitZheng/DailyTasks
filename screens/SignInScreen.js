@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,8 +7,11 @@ import {
   TouchableOpacity,
 } from "react-native";
 import colors from "../utils/colors";
+import { AuthContext } from "../App";
 
 const SignInScreen = ({ navigation }) => {
+  const { signIn } = useContext(AuthContext);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -22,6 +25,8 @@ const SignInScreen = ({ navigation }) => {
           style={styles.input}
           placeholder="JohnDoe@example.com"
           onChangeText={(text) => setEmail(text)}
+          autoCompleteType="email"
+          value={email}
         />
       </View>
 
@@ -32,10 +37,14 @@ const SignInScreen = ({ navigation }) => {
           placeholder="********"
           onChangeText={(text) => setPassword(text)}
           secureTextEntry={true}
+          value={password}
         />
       </View>
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => signIn({ email, password })}
+      >
         <Text style={{ color: colors.white, fontWeight: "600" }}>sign in</Text>
       </TouchableOpacity>
 

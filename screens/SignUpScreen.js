@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,8 +7,11 @@ import {
   TouchableOpacity,
 } from "react-native";
 import colors from "../utils/colors";
+import { AuthContext } from "../App";
 
 const SignUpScreen = ({ navigation }) => {
+  const { signUp } = useContext(AuthContext);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -22,6 +25,7 @@ const SignUpScreen = ({ navigation }) => {
           style={styles.input}
           placeholder="JohnDoe@example.com"
           onChangeText={(text) => setEmail(text)}
+          value={email}
         />
       </View>
 
@@ -32,11 +36,23 @@ const SignUpScreen = ({ navigation }) => {
           placeholder="********"
           onChangeText={(text) => setPassword(text)}
           secureTextEntry={true}
+          value={password}
         />
       </View>
 
-      <TouchableOpacity style={styles.button}>
-        <Text style={{ color: colors.white, fontWeight: "600" }}>sign in</Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => signUp({ email, password })}
+      >
+        <Text
+          style={{
+            color: colors.white,
+            fontWeight: "600",
+            fontFamily: "Roboto",
+          }}
+        >
+          sign up
+        </Text>
       </TouchableOpacity>
 
       <View style={styles.signup}>
