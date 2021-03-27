@@ -2,9 +2,11 @@ import React, { useEffect, useReducer } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as firebase from "firebase";
-import "firebase/auth";
-import "firebase/firestore";
+// import "firebase/auth";
+// import "firebase/firestore";
 import firebaseConfig from "./firebaseConfig";
+
+import { AuthContext } from "./src/context/authContext";
 
 // Disables timer warning
 import { LogBox } from "react-native";
@@ -18,7 +20,7 @@ LogBox.ignoreLogs(["Setting a timer"]);
 
 const Stack = createStackNavigator();
 
-const AuthContext = React.createContext();
+// const AuthContext = React.createContext();
 
 export default function App() {
   const [state, dispatch] = useReducer(
@@ -139,4 +141,4 @@ export default function App() {
   );
 }
 
-export { AuthContext };
+// export { AuthContext };

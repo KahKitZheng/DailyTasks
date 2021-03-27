@@ -7,13 +7,13 @@ import {
   FlatList,
   Modal,
 } from "react-native";
-import { StatusBar } from "expo-status-bar";
+// import { StatusBar } from "expo-status-bar";
 import { AntDesign } from "@expo/vector-icons";
 import colors from "../utils/colors";
-import fakeData from "../fakeData";
-import TodoList from "../src/components/TodoList";
-import AddListModal from "../src/components/AddListModal";
-import { AuthContext } from "../App";
+import fakeData from "../../fakeData";
+import TodoList from "../components/TodoList";
+import AddListModal from "../components/AddListModal";
+import { AuthContext } from "../context/authContext";
 
 const HomeScreen = () => {
   const [addTodoVisible, setAddTodoVisible] = useState(false);
@@ -87,7 +87,7 @@ const HomeScreen = () => {
         />
       </View>
 
-      <StatusBar style="auto" />
+      {/* <StatusBar style="auto" /> */}
     </View>
   );
 };
