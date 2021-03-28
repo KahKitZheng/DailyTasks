@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,7 +7,7 @@ import {
   FlatList,
   Modal,
 } from "react-native";
-// import { StatusBar } from "expo-status-bar";
+import { StatusBar } from "expo-status-bar";
 import { AntDesign } from "@expo/vector-icons";
 import colors from "../utils/colors";
 import fakeData from "../../fakeData";
@@ -15,11 +15,22 @@ import TodoList from "../components/TodoList";
 import AddListModal from "../components/AddListModal";
 import { AuthContext } from "../context/authContext";
 
+import * as firebase from "firebase";
+import "firebase/auth";
+import "firebase/firestore";
+
 const HomeScreen = () => {
   const [addTodoVisible, setAddTodoVisible] = useState(false);
   const [lists, setLists] = useState(fakeData);
+  const [user, setUser] = useState(null);
 
   const { signOut } = useContext(AuthContext);
+
+  useEffect(() => {
+    const currentUser = firebase.auth().currentUser;
+
+    setUser(currentUser);
+  }, []);
 
   const toggleAddTodoModal = () => {
     setAddTodoVisible(!addTodoVisible);
@@ -62,6 +73,9 @@ const HomeScreen = () => {
         <View style={styles.divider} />
       </View>
 
+      <View>
+        <Text>{user && user.email}</Text>
+      </View>
       <TouchableOpacity onPress={signOut}>
         <Text style={styles.link}>sign out</Text>
       </TouchableOpacity>
@@ -87,7 +101,7 @@ const HomeScreen = () => {
         />
       </View>
 
-      {/* <StatusBar style="auto" /> */}
+      <StatusBar style="auto" />
     </View>
   );
 };
