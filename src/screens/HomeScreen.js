@@ -10,7 +10,6 @@ import {
 import { StatusBar } from "expo-status-bar";
 import { AntDesign } from "@expo/vector-icons";
 import colors from "../utils/colors";
-import fakeData from "../../fakeData";
 import TodoList from "../components/TodoList";
 import AddListModal from "../components/AddListModal";
 import { AuthContext } from "../context/authContext";
@@ -21,23 +20,38 @@ import "firebase/firestore";
 
 const HomeScreen = () => {
   const [addTodoVisible, setAddTodoVisible] = useState(false);
-  const [lists, setLists] = useState(fakeData);
+  const [lists, setLists] = useState([]);
   const [user, setUser] = useState(null);
 
   const { signOut } = useContext(AuthContext);
 
   useEffect(() => {
+    const db = firebase.firestore();
     const currentUser = firebase.auth().currentUser;
+
+    const getUserList = (uid) => {
+      let fetchLists = [];
+
+      db.collection("users")
+        .doc(uid)
+        .collection("lists")
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            fetchLists.push({ id: doc.id, ...doc.data() });
+          });
+
+          setLists(fetchLists);
+        });
+    };
+
+    getUserList(currentUser.uid);
 
     setUser(currentUser);
   }, []);
 
   const toggleAddTodoModal = () => {
     setAddTodoVisible(!addTodoVisible);
-  };
-
-  const renderList = (list) => {
-    return <TodoList list={list} updateList={updateList} />;
   };
 
   const addList = (list) => {
@@ -93,10 +107,12 @@ const HomeScreen = () => {
       <View style={{ height: 275, paddingLeft: 32 }}>
         <FlatList
           data={lists}
-          keyExtractor={(item) => item.name}
+          keyExtractor={(item) => item.id}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
-          renderItem={({ item }) => renderList(item)}
+          renderItem={({ item }) => (
+            <TodoList list={item} updateList={updateList} />
+          )}
           keyboardShouldPersistTaps="always"
         />
       </View>

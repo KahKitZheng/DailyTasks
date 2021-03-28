@@ -6,9 +6,6 @@ import TodoModal from "./TodoModal";
 const TodoList = ({ list, updateList }) => {
   const [showListVisible, setShowListVisible] = useState(false);
 
-  const completedCount = list.todos.filter((todo) => todo.completed).length;
-  const remainingCount = list.todos.length - completedCount;
-
   const toggleListModal = () => {
     setShowListVisible(!showListVisible);
   };
@@ -30,19 +27,11 @@ const TodoList = ({ list, updateList }) => {
         style={[styles.listContainer, { backgroundColor: list.color }]}
         onPress={() => toggleListModal()}
       >
-        <Text style={styles.listTitle} numberOfLines={1}>
-          {list.name}
-        </Text>
-
         <View>
-          <View style={{ alignItems: "center" }}>
-            <Text style={styles.count}>{remainingCount}</Text>
-            <Text style={styles.subtitle}>Remaining</Text>
-          </View>
-          <View style={{ alignItems: "center" }}>
-            <Text style={styles.count}>{completedCount}</Text>
-            <Text style={styles.subtitle}>Completed</Text>
-          </View>
+          <Text style={styles.listTitle} numberOfLines={1}>
+            {list.title}
+          </Text>
+          <Text>{list.color}</Text>
         </View>
       </TouchableOpacity>
     </View>
