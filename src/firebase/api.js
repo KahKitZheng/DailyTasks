@@ -3,8 +3,6 @@ import "firebase/auth";
 import "firebase/firestore";
 import firebaseConfig from "./firebaseConfig";
 
-const db = firebase.firestore();
-
 /**
  * Initialize a new firebase instance if one already hasn't been created
  */
@@ -14,6 +12,8 @@ if (!firebase.apps.length) {
   // if already initialized, use that one
   firebase.app();
 }
+
+const db = firebase.firestore();
 
 /**
  * Fetches the logged in user object
