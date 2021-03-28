@@ -4,7 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import * as firebase from "firebase";
 import "firebase/auth";
 import "firebase/firestore";
-import firebaseConfig from "./firebaseConfig";
+import firebaseConfig from "./src/firebase/firebaseConfig";
 
 import { AuthContext } from "./src/context/authContext";
 
@@ -124,7 +124,7 @@ export default function App() {
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          {state.user === null ? (
+          {state.user == null ? (
             <>
               <Stack.Screen name="Sign In" component={SignInScreen} />
               <Stack.Screen name="Sign Up" component={SignUpScreen} />
