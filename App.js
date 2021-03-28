@@ -12,6 +12,7 @@ import { AuthContext } from "./src/context/authContext";
 import SignInScreen from "./src/screens/SignInScreen";
 import SignUpScreen from "./src/screens/SignUpScreen";
 import HomeScreen from "./src/screens/HomeScreen";
+import ListScreen from "./src/screens/ListScreen";
 
 // Disables timer warning
 import { LogBox } from "react-native";
@@ -123,13 +124,14 @@ export default function App() {
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          {state.user == null ? (
+          {state.user === null ? (
             <>
               <Stack.Screen name="Sign In" component={SignInScreen} />
               <Stack.Screen name="Sign Up" component={SignUpScreen} />
             </>
           ) : (
             <>
+              <Stack.Screen name="Lists" component={ListScreen} />
               <Stack.Screen name="Home" component={HomeScreen} />
             </>
           )}
