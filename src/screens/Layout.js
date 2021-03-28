@@ -1,12 +1,16 @@
 import React from "react";
 import { Text, SafeAreaView, View, StyleSheet } from "react-native";
+import { getToday } from "../utils/date";
 
 export default function Layout({ children }) {
+  const today = getToday();
+  const user = "Kah Kit";
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.date}>Sunday, 28 March</Text>
-        <Text style={styles.greetings}> Hello, User!</Text>
+        <Text style={styles.date}>{today}</Text>
+        <Text style={styles.greetings}> Hello, {user}!</Text>
       </View>
       <View style={styles.main}>{children}</View>
     </SafeAreaView>
@@ -42,7 +46,6 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
     borderTopLeftRadius: 30,
     paddingHorizontal: 20,
-    // padding: 20,
     elevation: 10,
   },
 });
