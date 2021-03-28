@@ -131,8 +131,8 @@ export default function App() {
             </>
           ) : (
             <>
-              <Stack.Screen name="Lists" component={ListScreen} />
               <Stack.Screen name="Home" component={HomeScreen} />
+              <Stack.Screen name="Lists" component={ListScreen} />
             </>
           )}
         </Stack.Navigator>

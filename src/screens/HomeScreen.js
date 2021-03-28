@@ -13,10 +13,7 @@ import colors from "../utils/colors";
 import TodoList from "../components/TodoList";
 import AddListModal from "../components/AddListModal";
 import { AuthContext } from "../context/authContext";
-
-import * as firebase from "firebase";
-import "firebase/auth";
-import "firebase/firestore";
+import { getUser, getUserList } from "../firebase/api";
 
 const HomeScreen = () => {
   const [addTodoVisible, setAddTodoVisible] = useState(false);
@@ -26,28 +23,13 @@ const HomeScreen = () => {
   const { signOut } = useContext(AuthContext);
 
   useEffect(() => {
-    const db = firebase.firestore();
-    const currentUser = firebase.auth().currentUser;
+    getUser().then((user) => {
+      setUser(user);
+    });
 
-    const getUserList = (uid) => {
-      let fetchLists = [];
-
-      db.collection("users")
-        .doc(uid)
-        .collection("lists")
-        .get()
-        .then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            fetchLists.push({ id: doc.id, ...doc.data() });
-          });
-
-          setLists(fetchLists);
-        });
-    };
-
-    getUserList(currentUser.uid);
-
-    setUser(currentUser);
+    getUserList().then((userLists) => {
+      setLists(userLists);
+    });
   }, []);
 
   const toggleAddTodoModal = () => {
