@@ -2,25 +2,23 @@ import React, { useEffect, useReducer } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as firebase from "firebase";
-// import "firebase/auth";
-// import "firebase/firestore";
+import "firebase/auth";
+import "firebase/firestore";
 import firebaseConfig from "./firebaseConfig";
 
 import { AuthContext } from "./src/context/authContext";
-
-// Disables timer warning
-import { LogBox } from "react-native";
 
 // Import Screens
 import SignInScreen from "./src/screens/SignInScreen";
 import SignUpScreen from "./src/screens/SignUpScreen";
 import HomeScreen from "./src/screens/HomeScreen";
 
+// Disables timer warning
+import { LogBox } from "react-native";
+
 LogBox.ignoreLogs(["Setting a timer"]);
 
 const Stack = createStackNavigator();
-
-// const AuthContext = React.createContext();
 
 export default function App() {
   const [state, dispatch] = useReducer(
@@ -89,7 +87,7 @@ export default function App() {
           .auth()
           .signInWithEmailAndPassword(data.email, data.password)
           .then((res) => {
-            dispatch({ type: "SIGN_IN", payload: res });
+            dispatch({ type: "SIGN_IN", payload: res.user });
           })
           .catch((error) => {
             console.error(error);
@@ -111,10 +109,10 @@ export default function App() {
             newUser = authUser;
             return db
               .doc(`users/${authUser.user.uid}`)
-              .set({ email }, { merge: true });
+              .set({ uid: authUser.user.uid, email }, { merge: true });
           })
           .then(() => {
-            return dispatch({ type: "SIGN_IN", payload: newUser });
+            return dispatch({ type: "SIGN_IN", payload: newUser.user });
           });
       },
     }),
