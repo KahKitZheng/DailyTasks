@@ -25,6 +25,7 @@ const SignUpScreen = ({ navigation }) => {
           style={styles.input}
           placeholder="JohnDoe@example.com"
           onChangeText={(text) => setEmail(text)}
+          autoCompleteType="email"
           value={email}
         />
       </View>
