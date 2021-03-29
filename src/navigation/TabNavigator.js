@@ -17,7 +17,11 @@ const BottomTabNavigator = () => {
     >
       <Tab.Screen name="Pomodoro" component={PomdoroNavigation} />
       <Tab.Screen name="Home" component={HomeNavigation} />
-      <Tab.Screen name="Lists" component={TodoNavigation} />
+      <Tab.Screen
+        name="Lists"
+        component={TodoNavigation}
+        options={{ unmountOnBlur: true }}
+      />
     </Tab.Navigator>
   );
 };
