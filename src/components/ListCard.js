@@ -10,17 +10,17 @@ export default function ListCard(props) {
   const [cardHeight, setCardHeight] = useState(0);
 
   function getCardSize(event) {
-    let { width, height } = event.nativeEvent.layout;
+    const { width, height } = event.nativeEvent.layout;
 
     setCardWidth(width);
-    setCardHeight(height);
+    setCardHeight(height - 6);
   }
 
   return (
     <Shadow
-      startColor="#00000007"
+      startColor="#00000010"
       distance={8}
-      offset={[8, 3]}
+      offset={[6, 3]}
       size={[cardWidth, cardHeight]}
     >
       <TouchableOpacity
