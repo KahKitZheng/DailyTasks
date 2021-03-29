@@ -21,7 +21,6 @@ export default function Layout({ title, underTitle, bgColor, children }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: "#FFCD2D",
     paddingTop: Platform.OS === "android" ? 40 : 0,
   },
   header: {
@@ -47,7 +46,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignSelf: "stretch",
     borderTopLeftRadius: 30,
-    // paddingHorizontal: 20,
     elevation: 10,
   },
 });

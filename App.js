@@ -1,27 +1,22 @@
 import React, { useEffect, useReducer } from "react";
+import { AuthContext } from "./src/context/authContext";
+
+// Import navigation modules
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { AuthNavigation } from "./src/navigation/StackNavigator";
+import BottomTabNavigator from "./src/navigation/TabNavigator";
+
+// Import Firebase libraries
 import * as firebase from "firebase";
 import "firebase/auth";
 import "firebase/firestore";
 import firebaseConfig from "./src/firebase/firebaseConfig";
 
-import { AuthContext } from "./src/context/authContext";
-
-// Import Screens
-import SignInScreen from "./src/screens/SignInScreen";
-import SignUpScreen from "./src/screens/SignUpScreen";
-import HomeScreen from "./src/screens/HomeScreen";
-import ListScreen from "./src/screens/ListScreen";
-import ListDetailScreen from "./src/screens/ListDetailScreen";
-
 // Disables timer warning
 import { LogBox } from "react-native";
-
 LogBox.ignoreLogs(["Setting a timer"]);
 
 export default function App() {
-  const Stack = createStackNavigator();
   const [state, dispatch] = useReducer(
     (prevState, action) => {
       switch (action.type) {
@@ -123,20 +118,7 @@ export default function App() {
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          {state.user == null ? (
-            <>
-              <Stack.Screen name="Sign In" component={SignInScreen} />
-              <Stack.Screen name="Sign Up" component={SignUpScreen} />
-            </>
-          ) : (
-            <>
-              <Stack.Screen name="Home" component={HomeScreen} />
-              <Stack.Screen name="Lists" component={ListScreen} />
-              <Stack.Screen name="List Details" component={ListDetailScreen} />
-            </>
-          )}
-        </Stack.Navigator>
+        {state.user == null ? <AuthNavigation /> : <BottomTabNavigator />}
       </NavigationContainer>
     </AuthContext.Provider>
   );
