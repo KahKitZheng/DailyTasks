@@ -1,5 +1,6 @@
 import React, { useEffect, useReducer } from "react";
 import { AuthContext } from "./src/context/authContext";
+import { StatusBar } from "expo-status-bar";
 
 // Import navigation modules
 import { NavigationContainer } from "@react-navigation/native";
@@ -120,6 +121,7 @@ export default function App() {
 
   return (
     <AuthContext.Provider value={authContext}>
+      <StatusBar style="auto" />
       <NavigationContainer>
         {state.user == null ? <AuthNavigation /> : <BottomTabNavigator />}
       </NavigationContainer>
