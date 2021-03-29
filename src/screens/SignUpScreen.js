@@ -12,6 +12,7 @@ import { AuthContext } from "../context/authContext";
 const SignUpScreen = ({ navigation }) => {
   const { signUp } = useContext(AuthContext);
 
+  const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -20,10 +21,18 @@ const SignUpScreen = ({ navigation }) => {
       <Text style={styles.title}> Sign Up</Text>
 
       <View style={{ alignSelf: "stretch", marginHorizontal: 32 }}>
+        <Text style={styles.label}>Display name</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={(text) => setDisplayName(text)}
+          value={displayName}
+        />
+      </View>
+
+      <View style={{ alignSelf: "stretch", marginHorizontal: 32 }}>
         <Text style={styles.label}>Email</Text>
         <TextInput
           style={styles.input}
-          placeholder="JohnDoe@example.com"
           onChangeText={(text) => setEmail(text)}
           autoCompleteType="email"
           value={email}
@@ -34,7 +43,6 @@ const SignUpScreen = ({ navigation }) => {
         <Text style={styles.label}>Password</Text>
         <TextInput
           style={styles.input}
-          placeholder="********"
           onChangeText={(text) => setPassword(text)}
           secureTextEntry={true}
           value={password}
@@ -43,7 +51,7 @@ const SignUpScreen = ({ navigation }) => {
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => signUp({ email, password })}
+        onPress={() => signUp({ displayName, email, password })}
       >
         <Text
           style={{

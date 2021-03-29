@@ -2,16 +2,13 @@ import React, { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import Layout from "./Layout";
 import ListCard from "../components/ListCard";
-import { getUser, getUserList } from "../firebase/api";
+import { getUserList } from "../firebase/api";
 import { FlatList } from "react-native-gesture-handler";
 
 export default function ListScreen({ navigation }) {
   const [userLists, setUserLists] = useState([]);
 
   useEffect(() => {
-    // // Application needs to know which user is authenticated before making request
-    // getUser();
-
     getUserList().then((res) => {
       setUserLists(res);
     });

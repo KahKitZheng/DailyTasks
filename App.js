@@ -95,7 +95,7 @@ export default function App() {
       },
       signUp: async (data) => {
         const db = firebase.firestore();
-        const { email, password } = data;
+        const { displayName, email, password } = data;
         let newUser = {};
 
         await firebase
@@ -105,7 +105,10 @@ export default function App() {
             newUser = authUser;
             return db
               .doc(`users/${authUser.user.uid}`)
-              .set({ uid: authUser.user.uid, email }, { merge: true });
+              .set(
+                { uid: authUser.user.uid, email, displayName },
+                { merge: true }
+              );
           })
           .then(() => {
             return dispatch({ type: "SIGN_IN", payload: newUser.user });

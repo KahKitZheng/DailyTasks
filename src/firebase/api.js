@@ -16,10 +16,28 @@ if (!firebase.apps.length) {
 const db = firebase.firestore();
 
 /**
- * Fetches the logged in user object
+ * Fetches the signed in user in Firebase Authentication
  */
-export const getUser = async () => {
+export const getUserFromFirebase = async () => {
   return await firebase.auth().currentUser;
+};
+
+/**
+ * Fetches the signed in user in the users collection of Firestore
+ * @returns {displayName: string, email: string, uid: string}
+ */
+export const getUserFromFireStore = async () => {
+  const currentUser = firebase.auth().currentUser;
+
+  return await db
+    .collection("users")
+    .doc(currentUser.uid)
+    .get()
+    .then((doc) => {
+      console.log(doc);
+
+      return doc.data();
+    });
 };
 
 /**
