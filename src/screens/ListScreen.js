@@ -1,55 +1,45 @@
-import React, { Component } from "react";
-import { Text, ScrollView, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet } from "react-native";
 import Layout from "./Layout";
 import ListCard from "../components/ListCard";
+import { getUser, getUserList } from "../firebase/api";
+import { FlatList } from "react-native-gesture-handler";
 
-export default function ListScreen() {
+export default function ListScreen({ navigation }) {
+  const [userLists, setUserLists] = useState([]);
+
+  useEffect(() => {
+    // // Application needs to know which user is authenticated before making request
+    // getUser();
+
+    getUserList().then((res) => {
+      setUserLists(res);
+    });
+  }, []);
+
   return (
-    <Layout>
-      <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
-        <ListCard
-          title="School"
-          description="Lorem ipsum dolor sit amet consectetur adipisicing elit."
-          color="#FFCD2D"
-          list=""
+    <Layout title="Your lists">
+      <View style={styles.container}>
+        <FlatList
+          data={userLists}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={{
+            paddingHorizontal: 20,
+            paddingVertical: 10,
+          }}
+          renderItem={({ item }) => (
+            <ListCard list={item} navigation={navigation} />
+          )}
+          keyboardShouldPersistTaps="always"
         />
-        <ListCard
-          title="Groceries"
-          description="Odit blanditiis laudantium, commodi praesentium sint doloribus accusamus fuga nesciunt quam vitae ex, inventore quod tenetur? Alias sed ipsam ducimus inventore qui."
-          color="#00E392"
-          list=""
-        />
-        <ListCard
-          title="School"
-          description="Lorem ipsum dolor sit amet consectetur adipisicing elit."
-          color="#FFCD2D"
-          list=""
-        />
-        <ListCard
-          title="Groceries"
-          description="Odit blanditiis laudantium, commodi praesentium sint doloribus accusamus fuga nesciunt quam vitae ex, inventore quod tenetur? Alias sed ipsam ducimus inventore qui."
-          color="#00E392"
-          list=""
-        />
-        <ListCard
-          title="School"
-          description="Lorem ipsum dolor sit amet consectetur adipisicing elit."
-          color="#FFCD2D"
-          list=""
-        />
-        <ListCard
-          title="Groceries"
-          description="Odit blanditiis laudantium, commodi praesentium sint doloribus accusamus fuga nesciunt quam vitae ex, inventore quod tenetur? Alias sed ipsam ducimus inventore qui."
-          color="#00E392"
-          list=""
-        />
-      </ScrollView>
+      </View>
     </Layout>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 30,
+    paddingTop: 20,
+    // marginRight: 10,
   },
 });

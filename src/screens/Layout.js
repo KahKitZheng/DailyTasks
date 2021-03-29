@@ -1,16 +1,17 @@
 import React from "react";
 import { Text, SafeAreaView, View, StyleSheet } from "react-native";
-import { getToday } from "../utils/date";
 
-export default function Layout({ children }) {
-  const today = getToday();
-  const user = "Kah Kit";
-
+export default function Layout({ title, underTitle, bgColor, children }) {
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[
+        styles.container,
+        { backgroundColor: bgColor ? bgColor : "#FFCD2D" },
+      ]}
+    >
       <View style={styles.header}>
-        <Text style={styles.date}>{today}</Text>
-        <Text style={styles.greetings}> Hello, {user}!</Text>
+        {underTitle && <Text style={styles.underTitle}>{underTitle}</Text>}
+        <Text style={styles.title}>{title}</Text>
       </View>
       <View style={styles.main}>{children}</View>
     </SafeAreaView>
@@ -20,7 +21,7 @@ export default function Layout({ children }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFCD2D",
+    // backgroundColor: "#FFCD2D",
     paddingTop: Platform.OS === "android" ? 40 : 0,
   },
   header: {
@@ -30,22 +31,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingBottom: 24,
   },
-  date: {
-    fontSize: 16,
-    fontFamily: "Roboto",
-    paddingHorizontal: 10,
-  },
-  greetings: {
+  title: {
     fontSize: 36,
     fontFamily: "Roboto",
     fontWeight: "bold",
+    paddingHorizontal: 8,
+  },
+  underTitle: {
+    fontSize: 16,
+    fontFamily: "Roboto",
+    paddingHorizontal: 8,
   },
   main: {
     flex: 5,
     backgroundColor: "#fff",
     alignSelf: "stretch",
     borderTopLeftRadius: 30,
-    paddingHorizontal: 20,
+    // paddingHorizontal: 20,
     elevation: 10,
   },
 });

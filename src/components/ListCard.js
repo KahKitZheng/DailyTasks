@@ -3,7 +3,8 @@ import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { Shadow } from "react-native-shadow-2";
 
 export default function ListCard(props) {
-  const { title, description, list, color } = props;
+  const { navigation } = props;
+  const { title, color, description, sublists } = props.list;
 
   const [cardWidth, setCardWidth] = useState(0);
   const [cardHeight, setCardHeight] = useState(0);
@@ -19,10 +20,19 @@ export default function ListCard(props) {
     <Shadow
       startColor="#00000007"
       distance={8}
-      offset={[6, 3]}
+      offset={[8, 3]}
       size={[cardWidth, cardHeight]}
     >
-      <TouchableOpacity onPress={() => console.log(":D")}>
+      <TouchableOpacity
+        activeOpacity={0.4}
+        onPress={() =>
+          navigation.navigate("List Details", {
+            listTitle: title,
+            listColor: color,
+            subLists: sublists,
+          })
+        }
+      >
         <View style={styles.wrapper}>
           <View
             style={[

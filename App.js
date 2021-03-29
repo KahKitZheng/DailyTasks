@@ -13,15 +13,15 @@ import SignInScreen from "./src/screens/SignInScreen";
 import SignUpScreen from "./src/screens/SignUpScreen";
 import HomeScreen from "./src/screens/HomeScreen";
 import ListScreen from "./src/screens/ListScreen";
+import ListDetailScreen from "./src/screens/ListDetailScreen";
 
 // Disables timer warning
 import { LogBox } from "react-native";
 
 LogBox.ignoreLogs(["Setting a timer"]);
 
-const Stack = createStackNavigator();
-
 export default function App() {
+  const Stack = createStackNavigator();
   const [state, dispatch] = useReducer(
     (prevState, action) => {
       switch (action.type) {
@@ -133,6 +133,7 @@ export default function App() {
             <>
               <Stack.Screen name="Home" component={HomeScreen} />
               <Stack.Screen name="Lists" component={ListScreen} />
+              <Stack.Screen name="List Details" component={ListDetailScreen} />
             </>
           )}
         </Stack.Navigator>
@@ -140,5 +141,3 @@ export default function App() {
     </AuthContext.Provider>
   );
 }
-
-// export { AuthContext };
