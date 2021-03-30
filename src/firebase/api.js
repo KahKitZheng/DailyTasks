@@ -34,8 +34,6 @@ export const getUserFromFireStore = async () => {
     .doc(currentUser.uid)
     .get()
     .then((doc) => {
-      console.log(doc);
-
       return doc.data();
     });
 };
