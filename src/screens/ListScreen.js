@@ -5,7 +5,6 @@ import ListCard from "../components/ListCard";
 import { getUserList, addList } from "../firebase/api";
 import { FlatList } from "react-native-gesture-handler";
 import AddListModal from "../components/AddListModal";
-// import AddListModal from "../components/OldAddListModal";
 
 export default function ListScreen({ navigation }) {
   const [userLists, setUserLists] = useState([]);
@@ -42,7 +41,6 @@ export default function ListScreen({ navigation }) {
             data={userLists}
             keyExtractor={(item) => item.id}
             contentContainerStyle={{
-              paddingHorizontal: 20,
               paddingVertical: 20,
               flexGrow: 1,
             }}

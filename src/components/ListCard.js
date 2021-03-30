@@ -1,6 +1,15 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Animated,
+} from "react-native";
 import { Shadow } from "react-native-shadow-2";
+import { BaseButton } from "react-native-gesture-handler";
+import Swipeable from "react-native-gesture-handler/Swipeable";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function ListCard(props) {
   const { navigation } = props;
@@ -16,50 +25,62 @@ export default function ListCard(props) {
     setCardHeight(height - 6);
   }
 
+  const renderLeftActions = () => (
+    <BaseButton rippleColor="#fff" onPress={() => console.log(":D")}>
+      <View style={styles.iconDelete}>
+        <Ionicons name="close-sharp" size={24} color={"#000"} />
+      </View>
+    </BaseButton>
+  );
+
   return (
-    <Shadow
-      startColor="#00000010"
-      distance={8}
-      offset={[6, 3]}
-      size={[cardWidth, cardHeight]}
-    >
-      <TouchableOpacity
-        activeOpacity={0.4}
-        onPress={() =>
-          navigation.navigate("List Details", {
-            listTitle: title,
-            listColor: color,
-            subLists: sublists,
-          })
-        }
+    <Swipeable renderRightActions={renderLeftActions}>
+      <Shadow
+        startColor="#00000010"
+        distance={8}
+        offset={[24, 7]}
+        size={[cardWidth, cardHeight]}
       >
-        <View style={styles.wrapper}>
-          <View
-            style={[
-              styles.accentBorder,
-              { borderColor: color, backgroundColor: color },
-            ]}
-          />
-          <View
-            style={[styles.container, { borderLeftColor: color }]}
-            onLayout={(event) => getCardSize(event)}
-          >
-            <Text style={styles.cardTitle} numberOfLines={1}>
-              {title}
-            </Text>
-            <Text style={styles.cardDescription} numberOfLines={2}>
-              {description}
-            </Text>
+        <TouchableOpacity
+          activeOpacity={0.4}
+          onPress={() =>
+            navigation.navigate("List Details", {
+              listTitle: title,
+              listColor: color,
+              subLists: sublists,
+            })
+          }
+        >
+          <View style={styles.wrapper}>
+            <View
+              style={[
+                styles.accentBorder,
+                { borderColor: color, backgroundColor: color },
+              ]}
+            />
+            <View
+              style={[styles.container, { borderLeftColor: color }]}
+              onLayout={(event) => getCardSize(event)}
+            >
+              <Text style={styles.cardTitle} numberOfLines={1}>
+                {title}
+              </Text>
+              <Text style={styles.cardDescription} numberOfLines={2}>
+                {description}
+              </Text>
+            </View>
           </View>
-        </View>
-      </TouchableOpacity>
-    </Shadow>
+        </TouchableOpacity>
+      </Shadow>
+    </Swipeable>
   );
 }
 
 const styles = StyleSheet.create({
   wrapper: {
     flexDirection: "row",
+    paddingTop: 4,
+    paddingHorizontal: 20,
   },
   accentBorder: {
     borderTopLeftRadius: 4,
@@ -70,6 +91,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignSelf: "stretch",
+    justifyContent: "center",
     height: 100,
     backgroundColor: "#fff",
     borderTopRightRadius: 4,
@@ -87,5 +109,11 @@ const styles = StyleSheet.create({
     color: "#7F8A9D",
     lineHeight: 18,
     paddingTop: 4,
+  },
+  iconDelete: {
+    alignItems: "center",
+    justifyContent: "center",
+    height: 100,
+    paddingRight: 15,
   },
 });
