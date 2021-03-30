@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Pressable, Modal, Text } from "react-native";
 import Layout from "./Layout";
 import ListCard from "../components/ListCard";
-import { getUserList, addList } from "../firebase/api";
+import { getUserList, deleteList } from "../firebase/api";
 import { FlatList } from "react-native-gesture-handler";
 import AddListModal from "../components/AddListModal";
 
@@ -15,6 +15,14 @@ export default function ListScreen({ navigation }) {
       setUserLists(res);
     });
   }, []);
+
+  function handleDeleteList(listID) {
+    let filtered = userLists.filter((list) => list.id !== listID);
+
+    deleteList(listID);
+
+    setUserLists(filtered);
+  }
 
   return (
     <Layout title="Your lists">
@@ -45,7 +53,11 @@ export default function ListScreen({ navigation }) {
               flexGrow: 1,
             }}
             renderItem={({ item }) => (
-              <ListCard list={item} navigation={navigation} />
+              <ListCard
+                list={item}
+                navigation={navigation}
+                handleDeleteList={handleDeleteList}
+              />
             )}
             keyboardShouldPersistTaps="always"
           />

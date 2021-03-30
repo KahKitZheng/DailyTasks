@@ -13,7 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 export default function ListCard(props) {
   const { navigation } = props;
-  const { title, color, description, sublists } = props.list;
+  const { id, title, color, description, sublists } = props.list;
 
   const [cardWidth, setCardWidth] = useState(0);
   const [cardHeight, setCardHeight] = useState(0);
@@ -26,7 +26,7 @@ export default function ListCard(props) {
   }
 
   const renderLeftActions = () => (
-    <BaseButton rippleColor="#fff" onPress={() => console.log(":D")}>
+    <BaseButton rippleColor="#fff" onPress={() => props.handleDeleteList(id)}>
       <View style={styles.iconDelete}>
         <Ionicons name="close-sharp" size={24} color={"#000"} />
       </View>

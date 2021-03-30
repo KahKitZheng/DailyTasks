@@ -86,3 +86,23 @@ export const addList = async (list) => {
       updatedAt: now.seconds,
     });
 };
+
+/**
+ * Delete the list in the user's list collection
+ */
+export const deleteList = async (listID) => {
+  const currentUser = firebase.auth().currentUser;
+
+  return await db
+    .collection("users")
+    .doc(currentUser.uid)
+    .collection("lists")
+    .doc(listID)
+    .delete()
+    .then(() => {
+      console.log(`Successfully deleted: ${listID}`);
+    })
+    .catch((error) => {
+      console.error(`Error removing document: ${listID}`, error);
+    });
+};
