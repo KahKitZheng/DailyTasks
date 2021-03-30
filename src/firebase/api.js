@@ -82,6 +82,7 @@ export const addList = async (list) => {
       title: listTitle,
       color: listColor,
       description: listDescription,
+      sublists: [],
       createdAt: now.seconds,
       updatedAt: now.seconds,
     });
@@ -101,6 +102,31 @@ export const deleteList = async (listID) => {
     .delete()
     .then(() => {
       console.log(`Successfully deleted: ${listID}`);
+    })
+    .catch((error) => {
+      console.error(`Error removing document: ${listID}`, error);
+    });
+};
+
+export const addSubList = async (listID, newSubList) => {
+  const currentUser = firebase.auth().currentUser;
+  const { id, title, color, tasks } = newSubList;
+
+  return await db
+    .collection("users")
+    .doc(currentUser.uid)
+    .collection("lists")
+    .doc(listID)
+    .update({
+      sublists: firebase.firestore.FieldValue.arrayUnion({
+        id,
+        title,
+        color,
+        tasks,
+      }),
+    })
+    .then(() => {
+      console.log(`Document with ID of: ${listID} successfully updated!`);
     })
     .catch((error) => {
       console.error(`Error removing document: ${listID}`, error);

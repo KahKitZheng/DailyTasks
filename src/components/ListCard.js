@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Animated,
-} from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { Shadow } from "react-native-shadow-2";
 import { BaseButton } from "react-native-gesture-handler";
 import Swipeable from "react-native-gesture-handler/Swipeable";
@@ -45,6 +39,7 @@ export default function ListCard(props) {
           activeOpacity={0.4}
           onPress={() =>
             navigation.navigate("List Details", {
+              id,
               listTitle: title,
               listColor: color,
               subLists: sublists,

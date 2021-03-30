@@ -8,9 +8,10 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
-import { addList } from "../firebase/api";
 
-export default function AddListModal({ closeModal }) {
+export default function AddSubListModal(props) {
+  const { listID, closeModal, navigation } = props;
+
   const backgroundColors = [
     "#5CD859",
     "#24A6D9",
@@ -21,11 +22,8 @@ export default function AddListModal({ closeModal }) {
     "#D88559",
   ];
 
-  const [listTitle, setListTitle] = useState("");
-  const [listDescription, setListDescription] = useState("");
-  const [listColor, setListColor] = useState(backgroundColors[0]);
-
-  const [height, setHeight] = useState(0);
+  const [subListTitle, setSubListTitle] = useState("");
+  const [subListColor, setSubListColor] = useState(backgroundColors[0]);
 
   function renderColors() {
     return backgroundColors.map((color) => {
@@ -33,17 +31,10 @@ export default function AddListModal({ closeModal }) {
         <TouchableOpacity
           key={color}
           style={[styles.colorSelect, { backgroundColor: color }]}
-          onPress={() => setListColor(color)}
+          onPress={() => setSubListColor(color)}
         />
       );
     });
-  }
-
-  function createList() {
-    const list = { listTitle, listDescription, listColor };
-
-    addList(list);
-    closeModal();
   }
 
   return (
@@ -53,27 +44,21 @@ export default function AddListModal({ closeModal }) {
       </TouchableOpacity>
 
       <View style={styles.main}>
-        <Text style={styles.title}> Create a list </Text>
+        <Text style={styles.title}> Create a sub list </Text>
         <Text style={styles.label}>Name</Text>
         <TextInput
-          value={listTitle}
-          onChangeText={(text) => setListTitle(text)}
+          value={subListTitle}
+          placeholder="Checklist:"
+          onChangeText={(text) => setSubListTitle(text)}
           style={styles.input}
-        />
-        <Text style={styles.label}>Description</Text>
-        <TextInput
-          value={listDescription}
-          onContentSizeChange={(event) => {
-            setHeight(event.nativeEvent.contentSize.height);
-          }}
-          onChangeText={(text) => setListDescription(text)}
-          multiline={true}
-          style={[styles.input, { height: Math.max(50, height) }]}
         />
         <View style={styles.colorList}>{renderColors()}</View>
         <TouchableOpacity
-          style={[styles.button, { backgroundColor: listColor }]}
-          onPress={() => createList()}
+          style={[styles.button, { backgroundColor: subListColor }]}
+          onPress={() => {
+            const newSubList = { listID, subListTitle, subListColor };
+            navigation.navigate("Lists", { addSubList: newSubList });
+          }}
         >
           <Text style={styles.buttonText}>Create!</Text>
         </TouchableOpacity>

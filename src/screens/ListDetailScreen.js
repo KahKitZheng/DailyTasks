@@ -1,18 +1,36 @@
-import React from "react";
-import { Text, View, StyleSheet, FlatList } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, FlatList, Pressable, Modal } from "react-native";
 import Layout from "./Layout";
 import TaskList from "../components/TaskList";
+import AddSubListModal from "../components/AddSubListModal";
 
-export default function ListDetailScreen({ route }) {
-  const { listTitle, listColor, subLists } = route.params;
+export default function ListDetailScreen({ navigation, route }) {
+  const { id, listTitle, listColor, subLists } = route.params;
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <Layout title={listTitle} bgColor={listColor}>
-      <FlatList
-        data={subLists}
-        keyExtractor={(item) => item.title}
-        renderItem={({ item }) => <TaskList subLists={item} />}
-      />
+      <Modal
+        animationType="slide"
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <AddSubListModal
+          listID={id}
+          navigation={navigation}
+          closeModal={() => setModalVisible(false)}
+        />
+      </Modal>
+      <Pressable
+        style={styles.container}
+        onLongPress={() => setModalVisible(true)}
+      >
+        <FlatList
+          data={subLists}
+          keyExtractor={(item) => item.title}
+          renderItem={({ item }) => <TaskList subLists={item} />}
+        />
+      </Pressable>
     </Layout>
   );
 }
@@ -20,7 +38,6 @@ export default function ListDetailScreen({ route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "#000",
   },
 });
