@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Pressable, Modal, Text } from "react-native";
 import Layout from "./Layout";
 import ListCard from "../components/ListCard";
-import { getUserList } from "../firebase/api";
+import { getUserList, addList } from "../firebase/api";
 import { FlatList } from "react-native-gesture-handler";
+import AddListModal from "../components/AddListModal";
+// import AddListModal from "../components/OldAddListModal";
 
 export default function ListScreen({ navigation }) {
   const [userLists, setUserLists] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     getUserList().then((res) => {
@@ -16,27 +19,46 @@ export default function ListScreen({ navigation }) {
 
   return (
     <Layout title="Your lists">
-      <View style={styles.container}>
-        <FlatList
-          data={userLists}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={{
-            paddingHorizontal: 20,
-            paddingVertical: 10,
+      <Modal
+        animationType="slide"
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <AddListModal
+          closeModal={() => {
+            getUserList().then((res) => {
+              setUserLists(res);
+            });
+            setModalVisible(false);
           }}
-          renderItem={({ item }) => (
-            <ListCard list={item} navigation={navigation} />
-          )}
-          keyboardShouldPersistTaps="always"
         />
+      </Modal>
+      <View style={styles.growSize}>
+        <Pressable
+          style={styles.growSize}
+          onLongPress={() => setModalVisible(true)}
+        >
+          <FlatList
+            data={userLists}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={{
+              paddingHorizontal: 20,
+              paddingVertical: 20,
+              flexGrow: 1,
+            }}
+            renderItem={({ item }) => (
+              <ListCard list={item} navigation={navigation} />
+            )}
+            keyboardShouldPersistTaps="always"
+          />
+        </Pressable>
       </View>
     </Layout>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    paddingTop: 20,
-    // marginRight: 10,
+  growSize: {
+    flexGrow: 1,
   },
 });

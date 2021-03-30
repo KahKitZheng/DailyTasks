@@ -1,16 +1,16 @@
 import React, { useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
 import {
   Text,
-  StyleSheet,
   View,
+  StyleSheet,
   KeyboardAvoidingView,
   TouchableOpacity,
   TextInput,
 } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
-import colors from "../utils/colors";
+import { addList } from "../firebase/api";
 
-const AddListModal = ({ closeModal, addList }) => {
+export default function AddListModal({ closeModal }) {
   const backgroundColors = [
     "#5CD859",
     "#24A6D9",
@@ -21,102 +21,121 @@ const AddListModal = ({ closeModal, addList }) => {
     "#D88559",
   ];
 
-  const [name, setName] = useState("");
-  const [color, setColor] = useState(backgroundColors[0]);
+  const [listTitle, setListTitle] = useState("");
+  const [listDescription, setListDescription] = useState("");
+  const [listColor, setListColor] = useState(backgroundColors[0]);
 
-  const renderColors = () => {
+  const [height, setHeight] = useState(0);
+
+  function renderColors() {
     return backgroundColors.map((color) => {
       return (
         <TouchableOpacity
           key={color}
           style={[styles.colorSelect, { backgroundColor: color }]}
-          onPress={() => setColor(color)}
+          onPress={() => setListColor(color)}
         />
       );
     });
-  };
+  }
 
-  const createTodo = () => {
-    const list = { color, name };
+  function createList() {
+    const list = { listTitle, listDescription, listColor };
 
     addList(list);
-
-    setName("");
     closeModal();
-  };
+  }
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
-      <TouchableOpacity
-        style={{ position: "absolute", top: 64, right: 32 }}
-        onPress={closeModal}
-      >
-        <AntDesign name="close" size={24} color={colors.black} />
+      <TouchableOpacity style={styles.closeIcon} onPress={closeModal}>
+        <Ionicons name="close-sharp" size={24} color={"#000"} />
       </TouchableOpacity>
 
-      <View style={{ alignSelf: "stretch", marginHorizontal: 32 }}>
-        <Text style={styles.title}>Create Todo List</Text>
+      <View style={styles.main}>
+        <Text style={styles.title}> Create a list </Text>
+        <Text style={styles.label}>Name</Text>
         <TextInput
+          value={listTitle}
+          onChangeText={(text) => setListTitle(text)}
           style={styles.input}
-          placeholder="List name"
-          onChangeText={(text) => setName(text)}
         />
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginTop: 12,
+        <Text style={styles.label}>Description</Text>
+        <TextInput
+          value={listDescription}
+          onContentSizeChange={(event) => {
+            setHeight(event.nativeEvent.contentSize.height);
           }}
-        >
-          {renderColors()}
-        </View>
+          onChangeText={(text) => setListDescription(text)}
+          multiline={true}
+          style={[styles.input, { height: Math.max(50, height) }]}
+        />
+        <View style={styles.colorList}>{renderColors()}</View>
         <TouchableOpacity
-          style={[styles.create, { backgroundColor: color }]}
-          onPress={() => createTodo()}
+          style={[styles.button, { backgroundColor: listColor }]}
+          onPress={() => createList()}
         >
-          <Text style={{ color: colors.white, fontWeight: "600" }}>
-            Create!
-          </Text>
+          <Text style={styles.buttonText}>Create!</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
+    justifyContent: "center",
+  },
+  closeIcon: {
+    position: "absolute",
+    top: 64,
+    right: 32,
+  },
+  main: {
+    alignSelf: "stretch",
+    marginHorizontal: 32,
   },
   title: {
+    alignSelf: "center",
+    color: "#000",
     fontSize: 28,
     fontWeight: "800",
-    color: colors.black,
-    alignSelf: "center",
     marginBottom: 16,
+  },
+  label: {
+    marginTop: 8,
   },
   input: {
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.blue,
+    borderColor: "#24A6D9",
     borderRadius: 6,
     height: 50,
     marginTop: 8,
+    marginBottom: 18,
     paddingHorizontal: 16,
     fontSize: 18,
   },
-  create: {
-    marginTop: 24,
-    height: 50,
-    borderRadius: 6,
-    alignItems: "center",
-    justifyContent: "center",
+  colorList: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 12,
   },
   colorSelect: {
     width: 30,
     height: 30,
     borderRadius: 4,
   },
+  button: {
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 6,
+    height: 50,
+    marginTop: 24,
+  },
+  buttonText: {
+    color: "#fff",
+    fontWeight: "600",
+  },
 });
-
-export default AddListModal;

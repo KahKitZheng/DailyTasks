@@ -11,7 +11,7 @@ import { StatusBar } from "expo-status-bar";
 import { AntDesign } from "@expo/vector-icons";
 import colors from "../utils/colors";
 import TodoList from "../components/TodoList";
-import AddListModal from "../components/AddListModal";
+import AddListModal from "../components/OldAddListModal";
 import { AuthContext } from "../context/authContext";
 import { getUser, getUserList } from "../firebase/api";
 
