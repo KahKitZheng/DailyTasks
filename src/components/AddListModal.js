@@ -47,7 +47,10 @@ export default function AddListModal({ closeModal }) {
   }
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior="padding">
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
       <TouchableOpacity style={styles.closeIcon} onPress={closeModal}>
         <Ionicons name="close-sharp" size={24} color={"#000"} />
       </TouchableOpacity>
@@ -90,8 +93,8 @@ const styles = StyleSheet.create({
   },
   closeIcon: {
     position: "absolute",
-    top: 20,
-    right: 20,
+    top: 12,
+    right: 12,
   },
   main: {
     alignSelf: "stretch",

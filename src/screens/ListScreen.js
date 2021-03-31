@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Pressable, Modal } from "react-native";
+import React, { useState, useEffect, useLayoutEffect } from "react";
+import { Pressable, Modal } from "react-native";
 import Layout from "./Layout";
 import ListCard from "../components/ListCard";
 import { getUserList, deleteList, addSubList } from "../firebase/api";
 import { FlatList } from "react-native-gesture-handler";
 import AddListModal from "../components/AddListModal";
 import { v4 as uuidv4 } from "uuid";
+import { Feather } from "@expo/vector-icons";
 
 export default function ListScreen({ navigation, route }) {
   const [userLists, setUserLists] = useState([]);
@@ -16,6 +17,25 @@ export default function ListScreen({ navigation, route }) {
       setUserLists(res);
     });
   }, []);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerStyle: {
+        elevation: 0,
+        backgroundColor: "#FFCD2D",
+      },
+      headerRight: () => (
+        <Pressable onPress={() => setModalVisible(true)}>
+          <Feather
+            name="plus"
+            size={24}
+            color="#000"
+            style={{ paddingRight: 12 }}
+          />
+        </Pressable>
+      ),
+    });
+  }, [navigation]);
 
   // Watch for new subLists to be added in a specifc user's list
   useEffect(() => {
@@ -69,7 +89,7 @@ export default function ListScreen({ navigation, route }) {
   }
 
   return (
-    <Layout title="Your lists">
+    <Layout title="Your lists" header={true}>
       <Modal
         animationType="slide"
         visible={modalVisible}
@@ -84,35 +104,22 @@ export default function ListScreen({ navigation, route }) {
           }}
         />
       </Modal>
-      <View style={styles.growSize}>
-        <Pressable
-          style={styles.growSize}
-          onLongPress={() => setModalVisible(true)}
-        >
-          <FlatList
-            data={userLists}
-            keyExtractor={(item) => item.id}
-            contentContainerStyle={{
-              paddingVertical: 20,
-              flexGrow: 1,
-            }}
-            renderItem={({ item }) => (
-              <ListCard
-                list={item}
-                navigation={navigation}
-                handleDeleteList={handleDeleteList}
-              />
-            )}
-            keyboardShouldPersistTaps="always"
+      <FlatList
+        data={userLists}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={{
+          paddingVertical: 20,
+          flexGrow: 1,
+        }}
+        renderItem={({ item }) => (
+          <ListCard
+            list={item}
+            navigation={navigation}
+            handleDeleteList={handleDeleteList}
           />
-        </Pressable>
-      </View>
+        )}
+        keyboardShouldPersistTaps="always"
+      />
     </Layout>
   );
 }
-
-const styles = StyleSheet.create({
-  growSize: {
-    flexGrow: 1,
-  },
-});

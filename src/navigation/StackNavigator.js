@@ -33,8 +33,16 @@ export const HomeNavigation = () => (
 );
 
 export const TodoNavigation = () => (
-  <Stack.Navigator screenOptions={{ headerShown: false }}>
-    <Stack.Screen name="Lists" component={ListScreen} />
-    <Stack.Screen name="List Details" component={ListDetailScreen} />
+  <Stack.Navigator>
+    <Stack.Screen
+      name="Lists"
+      options={{ title: "" }}
+      component={ListScreen}
+    />
+    <Stack.Screen
+      name="List Details"
+      options={{ title: "" }}
+      component={ListDetailScreen}
+    />
   </Stack.Navigator>
 );

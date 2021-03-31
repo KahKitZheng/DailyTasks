@@ -1,7 +1,9 @@
 import React from "react";
 import { Text, SafeAreaView, View, StyleSheet } from "react-native";
 
-export default function Layout({ title, underTitle, bgColor, children }) {
+export default function Layout(props) {
+  const { title, underTitle, bgColor, header, children } = props;
+
   return (
     <SafeAreaView
       style={[
@@ -13,7 +15,9 @@ export default function Layout({ title, underTitle, bgColor, children }) {
         {underTitle && <Text style={styles.underTitle}>{underTitle}</Text>}
         <Text style={styles.title}>{title}</Text>
       </View>
-      <View style={styles.main}>{children}</View>
+      <View style={[styles.main, { flex: header === true ? 18 : 5 }]}>
+        {children}
+      </View>
     </SafeAreaView>
   );
 }
