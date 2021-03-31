@@ -1,31 +1,59 @@
-import React, { useState } from "react";
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import { TextInput, View, StyleSheet, TouchableOpacity } from "react-native";
 import { Feather } from "@expo/vector-icons";
 
-export default function Task({ content }) {
+export default function Task({ content, isInputEmpty, newTask }) {
   const { title, completed } = content;
-  const [finished, setFinished] = useState(completed);
+
+  const [taskTitle, setTaskTitle] = useState("");
+  const [taskFinished, setTaskFinished] = useState("");
+  const [isFocused, setFocused] = useState(true);
+
+  const textInputReference = useRef(null);
+
+  useEffect(() => {
+    setTaskTitle(title);
+    setTaskFinished(completed);
+  }, [title, completed]);
+
+  useEffect(() => {
+    /**
+     * TODO: Condition might be incorrect,
+     * especially the newTask prop might be unnecessary.
+     */
+    if (isFocused === false && taskTitle === "" && newTask === true) {
+      isInputEmpty(true);
+    }
+  }, [isFocused, textInputReference]);
 
   return (
-    <View style={[styles.todoContainer, { opacity: finished ? 0.5 : 1 }]}>
-      <TouchableOpacity onPress={() => setFinished(!finished)}>
+    <View style={[styles.todoContainer, { opacity: taskFinished ? 0.5 : 1 }]}>
+      <TouchableOpacity onPress={() => setTaskFinished(!taskFinished)}>
         <Feather
-          name={finished ? "check-square" : "square"}
+          name={taskFinished ? "check-square" : "square"}
           size={24}
-          style={{ width: 44, color: finished ? "#7F8A9D" : "#000" }}
+          style={{ width: 44, color: taskFinished ? "#7F8A9D" : "#000" }}
         />
       </TouchableOpacity>
-      <Text
+      <TextInput
+        value={taskTitle}
+        autoFocus={true}
+        autoCorrect={false}
+        spellCheck={false}
+        onChangeText={(text) => setTaskTitle(text)}
+        ref={textInputReference}
+        onFocus={() => newTask === true && setFocused(true)}
+        onBlur={() => newTask === true && setFocused(false)}
         style={[
           styles.todo,
           {
-            textDecorationLine: finished ? "line-through" : "none",
-            color: finished ? "#7F8A9D" : "#000",
+            textDecorationLine: taskFinished ? "line-through" : "none",
+            color: taskFinished ? "#7F8A9D" : "#000",
           },
         ]}
       >
-        {title}
-      </Text>
+        {taskTitle}
+      </TextInput>
     </View>
   );
 }

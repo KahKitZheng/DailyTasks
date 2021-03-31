@@ -1,19 +1,41 @@
-import React from "react";
-import { Text, View, StyleSheet, FlatList } from "react-native";
+import React, { useState } from "react";
+import {
+  Text,
+  View,
+  StyleSheet,
+  FlatList,
+  TextInput,
+  TouchableWithoutFeedback,
+} from "react-native";
 import Task from "./Task";
 
-export default function TaskList({ subLists }) {
+export default function TaskList({ subLists, scrollToSubList }) {
   const { title, color, tasks } = subLists;
+
+  const [todoVisible, setTodoVisible] = useState(false);
 
   const taskCount = tasks.length;
   const taskCompleted = tasks.filter((task) => task.completed).length;
 
+  function isInputEmpty(value) {
+    value === true ? setTodoVisible(false) : setTodoVisible(true);
+  }
+
+  function sendActionBackUp() {
+    scrollToSubList(title);
+    setTodoVisible(true);
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={[styles.title, { color: color ? color : "#000" }]}>
+        <TextInput
+          autoCorrect={false}
+          spellCheck={false}
+          style={[styles.title, { color: color ? color : "#000" }]}
+        >
           {title}
-        </Text>
+        </TextInput>
         <Text style={styles.numberOfTasks}>
           {taskCompleted}/{taskCount}
         </Text>
@@ -25,6 +47,17 @@ export default function TaskList({ subLists }) {
           keyExtractor={(item) => item.name}
           renderItem={({ item }) => <Task content={item} />}
         />
+        <TouchableWithoutFeedback onPress={() => sendActionBackUp()}>
+          {todoVisible === false ? (
+            <View style={{ minHeight: 50 }} />
+          ) : (
+            <Task
+              content={{ title: "", completed: false }}
+              isInputEmpty={isInputEmpty}
+              newTask={true}
+            />
+          )}
+        </TouchableWithoutFeedback>
       </View>
     </View>
   );
@@ -32,7 +65,6 @@ export default function TaskList({ subLists }) {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20,
     marginBottom: 10,
     paddingHorizontal: 20,
   },
