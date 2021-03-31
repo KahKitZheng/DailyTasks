@@ -23,7 +23,6 @@ const SignInScreen = ({ navigation }) => {
         <Text style={styles.label}>Email</Text>
         <TextInput
           style={styles.input}
-          placeholder="JohnDoe@example.com"
           onChangeText={(text) => setEmail(text)}
           autoCompleteType="email"
           value={email}
@@ -34,7 +33,6 @@ const SignInScreen = ({ navigation }) => {
         <Text style={styles.label}>Password</Text>
         <TextInput
           style={styles.input}
-          placeholder="********"
           onChangeText={(text) => setPassword(text)}
           secureTextEntry={true}
           value={password}
