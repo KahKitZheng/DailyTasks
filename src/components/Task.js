@@ -36,8 +36,7 @@ export default function Task({ content, isInputEmpty, newTask }) {
         />
       </TouchableOpacity>
       <TextInput
-        value={taskTitle}
-        autoFocus={true}
+        autoFocus={newTask && true}
         autoCorrect={false}
         spellCheck={false}
         onChangeText={(text) => setTaskTitle(text)}
