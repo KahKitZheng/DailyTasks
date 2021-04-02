@@ -8,9 +8,11 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
+import { addSubList } from "../firebase/api";
+import { useNavigation } from "@react-navigation/native";
 
 export default function AddSubListModal(props) {
-  const { listID, closeModal, navigation } = props;
+  const { listID, closeModal } = props;
 
   const backgroundColors = [
     "#5CD859",
@@ -22,6 +24,7 @@ export default function AddSubListModal(props) {
     "#D88559",
   ];
 
+  const navigation = useNavigation();
   const [subListTitle, setSubListTitle] = useState("");
   const [subListColor, setSubListColor] = useState(backgroundColors[0]);
 
@@ -60,7 +63,8 @@ export default function AddSubListModal(props) {
           style={[styles.button, { backgroundColor: subListColor }]}
           onPress={() => {
             const newSubList = { listID, subListTitle, subListColor };
-            navigation.navigate("Lists", { addSubList: newSubList });
+            addSubList(listID, newSubList);
+            closeModal();
           }}
         >
           <Text style={styles.buttonText}>Create!</Text>

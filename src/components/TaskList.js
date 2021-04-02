@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import {
   Text,
   View,
@@ -8,22 +8,44 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import Task from "./Task";
+import { updateTaskList } from "../firebase/api";
 
-export default function TaskList({ subLists, scrollToSubList }) {
-  const { title, color, tasks } = subLists;
-
+export default function TaskList({ listID, subList }) {
+  const { id, subListTitle, subListColor, subListTasks } = subList;
+  const [taskList, setTaskList] = useState(subListTasks);
   const [todoVisible, setTodoVisible] = useState(false);
 
-  const taskCount = tasks.length;
-  const taskCompleted = tasks.filter((task) => task.completed).length;
+  const taskCount = taskList.length;
+  const taskCompleted = taskList.filter((task) => task.taskFinished).length;
+
+  const updateList = useCallback(
+    (newTask) => {
+      let findTaskByID = (task) => task.id === newTask.id;
+      let listIndex = taskList.findIndex(findTaskByID);
+
+      // Add new task
+      if (listIndex === -1) {
+        setTaskList([...taskList, newTask]);
+
+        updateTaskList(listID, id, [...taskList, newTask]);
+      }
+
+      // Update existing task
+      if (listIndex >= 0) {
+        const copyList = [...taskList];
+
+        copyList[listIndex].taskTitle = newTask.taskTitle;
+        copyList[listIndex].taskFinished = newTask.taskFinished;
+
+        setTaskList(copyList);
+        updateTaskList(listID, id, copyList);
+      }
+    },
+    [taskList]
+  );
 
   function isInputEmpty(value) {
     value === true ? setTodoVisible(false) : setTodoVisible(true);
-  }
-
-  function sendActionBackUp() {
-    scrollToSubList(title);
-    setTodoVisible(true);
   }
 
   return (
@@ -32,9 +54,12 @@ export default function TaskList({ subLists, scrollToSubList }) {
         <TextInput
           autoCorrect={false}
           spellCheck={false}
-          style={[styles.title, { color: color ? color : "#000" }]}
+          style={[
+            styles.title,
+            { color: subListColor ? subListColor : "#000" },
+          ]}
         >
-          {title}
+          {subListTitle}
         </TextInput>
         <Text style={styles.numberOfTasks}>
           {taskCompleted}/{taskCount}
@@ -43,18 +68,21 @@ export default function TaskList({ subLists, scrollToSubList }) {
 
       <View>
         <FlatList
-          data={tasks}
-          keyExtractor={(item) => item.name}
-          renderItem={({ item }) => <Task content={item} />}
+          data={taskList}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <Task content={item} updateList={updateList} />
+          )}
         />
-        <TouchableWithoutFeedback onPress={() => sendActionBackUp()}>
+        <TouchableWithoutFeedback onPress={() => setTodoVisible(true)}>
           {todoVisible === false ? (
             <View style={{ minHeight: 50 }} />
           ) : (
             <Task
-              content={{ title: "", completed: false }}
+              content={{ taskTitle: "", taskFinished: false }}
               isInputEmpty={isInputEmpty}
               newTask={true}
+              updateList={updateList}
             />
           )}
         </TouchableWithoutFeedback>
