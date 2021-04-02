@@ -18,26 +18,28 @@ export default function TaskList({ listID, subList }) {
   const taskCount = taskList.length;
   const taskCompleted = taskList.filter((task) => task.taskFinished).length;
 
-  const updateList = useCallback((newTask) => {
-    let findTaskByID = (task) => task.id === newTask.id;
-    let listIndex = subListTasks.findIndex(findTaskByID);
+  const updateList = useCallback(
+    (newTask) => {
+      let findTaskByID = (task) => task.id === newTask.id;
+      let listIndex = subListTasks.findIndex(findTaskByID);
 
-    // Add new task
-    if (listIndex === -1) {
-      setTaskList([...taskList, newTask]);
+      // Add new task
+      if (listIndex === -1) {
+        setTaskList([...taskList, newTask]);
+        updateTaskList(listID, id, [...taskList, newTask]);
+      }
 
-      updateTaskList(listID, id, [...taskList, newTask]);
-    }
+      // Update existing task
+      if (listIndex >= 0) {
+        taskList[listIndex].taskTitle = newTask.taskTitle;
+        taskList[listIndex].taskFinished = newTask.taskFinished;
 
-    // Update existing task
-    if (listIndex >= 0) {
-      taskList[listIndex].taskTitle = newTask.taskTitle;
-      taskList[listIndex].taskFinished = newTask.taskFinished;
-
-      setTaskList(taskList);
-      updateTaskList(listID, id, taskList);
-    }
-  }, []);
+        setTaskList(taskList);
+        updateTaskList(listID, id, taskList);
+      }
+    },
+    [taskList]
+  );
 
   function isInputEmpty(value) {
     value === true ? setTodoVisible(false) : setTodoVisible(true);
