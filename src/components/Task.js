@@ -17,7 +17,7 @@ export default function Task({ content, isInputEmpty, newTask, updateList }) {
     }
   }, [isFocused, isInputEmpty, newTask, taskTitle]);
 
-  function updateTask() {
+  function updateTask(type) {
     const uuid = uuidv4();
     const task = {
       id: id ? id : uuid,
@@ -25,18 +25,19 @@ export default function Task({ content, isInputEmpty, newTask, updateList }) {
       taskFinished: completed,
     };
 
-    if (title !== taskTitle || completed !== taskFinished) {
-      console.log("Should update Firestore");
+    if (title !== taskTitle && type === "title") {
+      updateList(task);
+    } else if (type === "status") {
+      const task = { id, taskTitle, taskFinished: !completed };
 
       updateList(task);
-    } else {
-      console.log("Just kidding, not changing anything");
+      setCompleted(!completed);
     }
   }
 
   return (
     <View style={[styles.todoContainer, { opacity: completed ? 0.5 : 1 }]}>
-      <TouchableOpacity onPress={() => setCompleted(!completed)}>
+      <TouchableOpacity onPress={() => updateTask("status")}>
         <Feather
           name={completed ? "check-square" : "square"}
           size={24}
@@ -49,7 +50,7 @@ export default function Task({ content, isInputEmpty, newTask, updateList }) {
         spellCheck={false}
         ref={textInputReference}
         onChangeText={(text) => setTitle(text)}
-        onEndEditing={() => updateTask()}
+        onEndEditing={() => updateTask("title")}
         onFocus={() => newTask === true && setFocused(true)}
         onBlur={() => newTask === true && setFocused(false)}
         style={[

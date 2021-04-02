@@ -16,7 +16,7 @@ export default function TaskList({ listID, subList }) {
   const [todoVisible, setTodoVisible] = useState(false);
 
   const taskCount = taskList.length;
-  const taskCompleted = taskList.filter((task) => task.completed).length;
+  const taskCompleted = taskList.filter((task) => task.taskFinished).length;
 
   const updateList = useCallback((newTask) => {
     let findTaskByID = (task) => task.id === newTask.id;
@@ -32,6 +32,7 @@ export default function TaskList({ listID, subList }) {
     // Update existing task
     if (listIndex >= 0) {
       taskList[listIndex].taskTitle = newTask.taskTitle;
+      taskList[listIndex].taskFinished = newTask.taskFinished;
 
       setTaskList(taskList);
       updateTaskList(listID, id, taskList);
