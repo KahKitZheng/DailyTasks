@@ -17,7 +17,7 @@ export default function Task({ content, isInputEmpty, newTask, updateList }) {
     }
   }, [isFocused, isInputEmpty, newTask, taskTitle]);
 
-  function shouldIUpdate() {
+  function updateTask() {
     const uuid = uuidv4();
     const task = {
       id: id ? id : uuid,
@@ -49,7 +49,7 @@ export default function Task({ content, isInputEmpty, newTask, updateList }) {
         spellCheck={false}
         ref={textInputReference}
         onChangeText={(text) => setTitle(text)}
-        onEndEditing={() => shouldIUpdate()}
+        onEndEditing={() => updateTask()}
         onFocus={() => newTask === true && setFocused(true)}
         onBlur={() => newTask === true && setFocused(false)}
         style={[

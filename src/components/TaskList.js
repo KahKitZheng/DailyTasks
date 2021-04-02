@@ -12,21 +12,35 @@ import { updateTaskList } from "../firebase/api";
 
 export default function TaskList({ listID, subList }) {
   const { id, subListTitle, subListColor, subListTasks } = subList;
-
+  const [taskList, setTaskList] = useState(subListTasks);
   const [todoVisible, setTodoVisible] = useState(false);
 
-  const taskCount = subListTasks.length;
-  const taskCompleted = subListTasks.filter((task) => task.completed).length;
+  const taskCount = taskList.length;
+  const taskCompleted = taskList.filter((task) => task.completed).length;
+
+  const updateList = useCallback((newTask) => {
+    let findTaskByID = (task) => task.id === newTask.id;
+    let listIndex = subListTasks.findIndex(findTaskByID);
+
+    // Add new task
+    if (listIndex === -1) {
+      setTaskList([...taskList, newTask]);
+
+      updateTaskList(listID, id, [...taskList, newTask]);
+    }
+
+    // Update existing task
+    if (listIndex >= 0) {
+      taskList[listIndex].taskTitle = newTask.taskTitle;
+
+      setTaskList(taskList);
+      updateTaskList(listID, id, taskList);
+    }
+  }, []);
 
   function isInputEmpty(value) {
     value === true ? setTodoVisible(false) : setTodoVisible(true);
   }
-
-  const updateList = useCallback((newTask) => {
-    subListTasks.push(newTask);
-
-    updateTaskList(listID, id, subListTasks);
-  });
 
   return (
     <View style={styles.container}>
@@ -48,9 +62,11 @@ export default function TaskList({ listID, subList }) {
 
       <View>
         <FlatList
-          data={subListTasks}
+          data={taskList}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <Task content={item} />}
+          renderItem={({ item }) => (
+            <Task content={item} updateList={updateList} />
+          )}
         />
         <TouchableWithoutFeedback onPress={() => setTodoVisible(true)}>
           {todoVisible === false ? (
