@@ -1,22 +1,40 @@
-import React, { useState, useLayoutEffect } from "react";
-import { FlatList, Modal, Pressable } from "react-native";
+import React, { useState, useEffect, useLayoutEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Modal,
+  Pressable,
+} from "react-native";
+import { Feather } from "@expo/vector-icons";
+import { getSubLists } from "../firebase/api";
 import Layout from "./Layout";
 import TaskList from "../components/TaskList";
 import AddSubListModal from "../components/AddSubListModal";
-import { Feather } from "@expo/vector-icons";
-import { useRef } from "react";
 
 export default function ListDetailScreen({ navigation, route }) {
-  const { id, listTitle, listColor, subLists } = route.params;
+  const { id, listTitle, listColor } = route.params;
+  const [subLists, setSubLists] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const flatListRef = useRef();
+
+  useEffect(() => {
+    getSubLists(id).then((res) => setSubLists(res));
+  }, [navigation, id]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerStyle: {
-        elevation: 0,
-        backgroundColor: listColor,
-      },
+      headerStyle: { elevation: 0, backgroundColor: listColor },
+      headerLeft: () => (
+        <Pressable onPress={() => navigation.goBack()}>
+          <Feather
+            name="arrow-left"
+            size={24}
+            color="#000"
+            style={{ paddingLeft: 16 }}
+          />
+        </Pressable>
+      ),
       headerRight: () => (
         <Pressable onPress={() => setModalVisible(true)}>
           <Feather
@@ -28,27 +46,7 @@ export default function ListDetailScreen({ navigation, route }) {
         </Pressable>
       ),
     });
-  }, [navigation]);
-
-  /**
-   * TODO: Can possibly fixed using the getItemLayout props in Flatlist
-   *
-   * Doesn't exactly scroll to the given index, however it resolves
-   * the bug where it prevents from the keyboard showing up when
-   * a new task is created. This bug only occurs when the new tasks is
-   * positioned lower than the showing keyboard.
-   */
-  function scrollToSubList(title) {
-    let findTextInputByID = (el) => el.title === title;
-    let index = subLists.findIndex(findTextInputByID);
-
-    flatListRef.current.scrollToIndex({
-      animated: true,
-      index: index,
-      viewOffset: 0,
-      viewPosition: 1,
-    });
-  }
+  }, [navigation, listColor]);
 
   return (
     <Layout title={listTitle} bgColor={listColor} header={true}>
@@ -60,23 +58,45 @@ export default function ListDetailScreen({ navigation, route }) {
         <AddSubListModal
           listID={id}
           navigation={navigation}
-          closeModal={() => setModalVisible(false)}
+          closeModal={() => {
+            setModalVisible(false);
+            getSubLists(id).then((res) => setSubLists(res));
+          }}
         />
       </Modal>
-      <FlatList
-        data={subLists}
-        keyExtractor={(item) => item.title}
-        showsVerticalScrollIndicator={false}
-        ref={flatListRef}
-        renderItem={({ item }) => (
-          <TaskList subLists={item} scrollToSubList={scrollToSubList} />
-        )}
-        contentContainerStyle={{
-          marginTop: 30,
-          paddingBottom: 30,
-          borderTopLeftRadius: 20,
-        }}
-      />
+      {subLists.length === 0 ? (
+        <View style={styles.emptyPlaceholder}>
+          <Text style={styles.placeholderText}>
+            Use the + icon to add new lists
+          </Text>
+        </View>
+      ) : (
+        <FlatList
+          data={subLists}
+          keyExtractor={(item) => item.id}
+          showsVerticalScrollIndicator={false}
+          renderItem={({ item }) => <TaskList listID={id} subList={item} />}
+          contentContainerStyle={{
+            marginTop: 30,
+            paddingBottom: 30,
+            borderTopLeftRadius: 20,
+          }}
+        />
+      )}
     </Layout>
   );
 }
+
+const styles = StyleSheet.create({
+  emptyPlaceholder: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  placeholderText: {
+    fontSize: 16,
+    fontWeight: "700",
+    fontFamily: "Roboto",
+    color: "#C0C0C0",
+  },
+});

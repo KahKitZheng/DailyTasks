@@ -1,13 +1,12 @@
 import React, { useState } from "react";
+import Swipeable from "react-native-gesture-handler/Swipeable";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { Shadow } from "react-native-shadow-2";
-import { BaseButton } from "react-native-gesture-handler";
-import Swipeable from "react-native-gesture-handler/Swipeable";
 import { Ionicons } from "@expo/vector-icons";
+import { BaseButton } from "react-native-gesture-handler";
 
 export default function ListCard(props) {
-  const { navigation } = props;
-  const { id, title, color, description, sublists } = props.list;
+  const { id, title, color, description } = props.list;
 
   const [cardWidth, setCardWidth] = useState(0);
   const [cardHeight, setCardHeight] = useState(0);
@@ -38,11 +37,10 @@ export default function ListCard(props) {
         <TouchableOpacity
           activeOpacity={0.4}
           onPress={() =>
-            navigation.navigate("List Details", {
+            props.navigation.navigate("List Details", {
               id,
               listTitle: title,
               listColor: color,
-              subLists: sublists,
             })
           }
         >

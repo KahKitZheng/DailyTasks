@@ -17,13 +17,6 @@ if (!firebase.apps.length) {
 const db = firebase.firestore();
 
 /**
- * Fetches the signed in user in Firebase Authentication
- */
-export const getUserFromFirebase = async () => {
-  return await firebase.auth().currentUser;
-};
-
-/**
  * Fetches the signed in user in the users collection of Firestore
  */
 export const getUserFromFireStore = async () => {
@@ -66,9 +59,8 @@ export const addList = async (list) => {
   const { listTitle, listColor, listDescription } = list;
 
   const uuid = uuidv4();
-  const currentUser = firebase.auth().currentUser;
-
   const now = firebase.firestore.Timestamp.now();
+  const currentUser = firebase.auth().currentUser;
 
   return await db
     .collection("users")
@@ -76,11 +68,9 @@ export const addList = async (list) => {
     .collection("lists")
     .doc(uuid)
     .set({
-      id: uuid,
       title: listTitle,
       color: listColor,
       description: listDescription,
-      sublists: [],
       createdAt: now.seconds,
       updatedAt: now.seconds,
     });
@@ -106,27 +96,76 @@ export const deleteList = async (listID) => {
     });
 };
 
-export const addSubList = async (listID, newSubList) => {
+export const getSubLists = async (listID) => {
+  let fetchSubLists = [];
   const currentUser = firebase.auth().currentUser;
-  const { id, title, color, tasks } = newSubList;
 
   return await db
     .collection("users")
     .doc(currentUser.uid)
     .collection("lists")
     .doc(listID)
-    .update({
-      sublists: firebase.firestore.FieldValue.arrayUnion({
-        id,
-        title,
-        color,
-        tasks,
-      }),
+    .collection("subLists")
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        fetchSubLists.push({ id: doc.id, ...doc.data() });
+      });
+
+      console.log(`Fetch subList of ID: ${listID}`);
+
+      return fetchSubLists;
+    });
+};
+
+export const addSubList = async (listID, newSubList) => {
+  const { subListTitle, subListColor } = newSubList;
+
+  const uuid = uuidv4();
+  const now = firebase.firestore.Timestamp.now();
+  const currentUser = firebase.auth().currentUser;
+
+  return await db
+    .collection("users")
+    .doc(currentUser.uid)
+    .collection("lists")
+    .doc(listID)
+    .collection("subLists")
+    .doc(uuid)
+    .set({
+      subListTitle,
+      subListColor,
+      subListTasks: [],
+      createdAt: now.seconds,
+      updatedAt: now.seconds,
     })
     .then(() => {
-      console.log(`Document with ID of: ${listID} successfully updated!`);
+      console.log(`Successfully added subList with ID of: ${uuid}`);
     })
     .catch((error) => {
-      console.error(`Error removing document: ${listID}`, error);
+      console.error(`Error adding subList: ${uuid}`, error);
+    });
+};
+
+export const updateTaskList = async (listID, taskListID, updatedTaskList) => {
+  const currentUser = firebase.auth().currentUser;
+  const now = firebase.firestore.Timestamp.now();
+
+  return await db
+    .collection("users")
+    .doc(currentUser.uid)
+    .collection("lists")
+    .doc(listID)
+    .collection("subLists")
+    .doc(taskListID)
+    .update({
+      subListTasks: updatedTaskList,
+      updatedAt: now.seconds,
+    })
+    .then(() => {
+      console.log(`Successfully updated taskList with ID of: ${taskListID}`);
+    })
+    .catch((error) => {
+      console.error(`Error adding taskList: ${taskListID}`, error);
     });
 };

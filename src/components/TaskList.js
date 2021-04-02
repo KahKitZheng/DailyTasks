@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import {
   Text,
   View,
@@ -8,23 +8,25 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import Task from "./Task";
+import { updateTaskList } from "../firebase/api";
 
-export default function TaskList({ subLists, scrollToSubList }) {
-  const { title, color, tasks } = subLists;
+export default function TaskList({ listID, subList }) {
+  const { id, subListTitle, subListColor, subListTasks } = subList;
 
   const [todoVisible, setTodoVisible] = useState(false);
 
-  const taskCount = tasks.length;
-  const taskCompleted = tasks.filter((task) => task.completed).length;
+  const taskCount = subListTasks.length;
+  const taskCompleted = subListTasks.filter((task) => task.completed).length;
 
   function isInputEmpty(value) {
     value === true ? setTodoVisible(false) : setTodoVisible(true);
   }
 
-  function sendActionBackUp() {
-    scrollToSubList(title);
-    setTodoVisible(true);
-  }
+  const updateList = useCallback((newTask) => {
+    subListTasks.push(newTask);
+
+    updateTaskList(listID, id, subListTasks);
+  });
 
   return (
     <View style={styles.container}>
@@ -32,9 +34,12 @@ export default function TaskList({ subLists, scrollToSubList }) {
         <TextInput
           autoCorrect={false}
           spellCheck={false}
-          style={[styles.title, { color: color ? color : "#000" }]}
+          style={[
+            styles.title,
+            { color: subListColor ? subListColor : "#000" },
+          ]}
         >
-          {title}
+          {subListTitle}
         </TextInput>
         <Text style={styles.numberOfTasks}>
           {taskCompleted}/{taskCount}
@@ -43,18 +48,19 @@ export default function TaskList({ subLists, scrollToSubList }) {
 
       <View>
         <FlatList
-          data={tasks}
-          keyExtractor={(item) => item.name}
+          data={subListTasks}
+          keyExtractor={(item) => item.id}
           renderItem={({ item }) => <Task content={item} />}
         />
-        <TouchableWithoutFeedback onPress={() => sendActionBackUp()}>
+        <TouchableWithoutFeedback onPress={() => setTodoVisible(true)}>
           {todoVisible === false ? (
             <View style={{ minHeight: 50 }} />
           ) : (
             <Task
-              content={{ title: "", completed: false }}
+              content={{ taskTitle: "", taskFinished: false }}
               isInputEmpty={isInputEmpty}
               newTask={true}
+              updateList={updateList}
             />
           )}
         </TouchableWithoutFeedback>

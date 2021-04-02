@@ -1,53 +1,62 @@
 import React, { useState, useEffect, useRef } from "react";
 import { TextInput, View, StyleSheet, TouchableOpacity } from "react-native";
 import { Feather } from "@expo/vector-icons";
+import { v4 as uuidv4 } from "uuid";
 
-export default function Task({ content, isInputEmpty, newTask }) {
-  const { title, completed } = content;
+export default function Task({ content, isInputEmpty, newTask, updateList }) {
+  const textInputReference = useRef();
+  const { id, taskTitle, taskFinished } = content;
 
-  const [taskTitle, setTaskTitle] = useState("");
-  const [taskFinished, setTaskFinished] = useState("");
+  const [title, setTitle] = useState(taskTitle);
+  const [completed, setCompleted] = useState(taskFinished);
   const [isFocused, setFocused] = useState(true);
 
-  const textInputReference = useRef(null);
-
   useEffect(() => {
-    setTaskTitle(title);
-    setTaskFinished(completed);
-  }, [title, completed]);
-
-  useEffect(() => {
-    /**
-     * TODO: Condition might be incorrect,
-     * especially the newTask prop might be unnecessary.
-     */
     if (isFocused === false && taskTitle === "" && newTask === true) {
       isInputEmpty(true);
     }
-  }, [isFocused, textInputReference]);
+  }, [isFocused, isInputEmpty, newTask, taskTitle]);
+
+  function shouldIUpdate() {
+    const uuid = uuidv4();
+    const task = {
+      id: id ? id : uuid,
+      taskTitle: title,
+      taskFinished: completed,
+    };
+
+    if (title !== taskTitle || completed !== taskFinished) {
+      console.log("Should update Firestore");
+
+      updateList(task);
+    } else {
+      console.log("Just kidding, not changing anything");
+    }
+  }
 
   return (
-    <View style={[styles.todoContainer, { opacity: taskFinished ? 0.5 : 1 }]}>
-      <TouchableOpacity onPress={() => setTaskFinished(!taskFinished)}>
+    <View style={[styles.todoContainer, { opacity: completed ? 0.5 : 1 }]}>
+      <TouchableOpacity onPress={() => setCompleted(!completed)}>
         <Feather
-          name={taskFinished ? "check-square" : "square"}
+          name={completed ? "check-square" : "square"}
           size={24}
-          style={{ width: 44, color: taskFinished ? "#7F8A9D" : "#000" }}
+          style={{ width: 44, color: completed ? "#7F8A9D" : "#000" }}
         />
       </TouchableOpacity>
       <TextInput
         autoFocus={newTask && true}
         autoCorrect={false}
         spellCheck={false}
-        onChangeText={(text) => setTaskTitle(text)}
         ref={textInputReference}
+        onChangeText={(text) => setTitle(text)}
+        onEndEditing={() => shouldIUpdate()}
         onFocus={() => newTask === true && setFocused(true)}
         onBlur={() => newTask === true && setFocused(false)}
         style={[
           styles.todo,
           {
-            textDecorationLine: taskFinished ? "line-through" : "none",
-            color: taskFinished ? "#7F8A9D" : "#000",
+            textDecorationLine: completed ? "line-through" : "none",
+            color: completed ? "#7F8A9D" : "#000",
           },
         ]}
       >
