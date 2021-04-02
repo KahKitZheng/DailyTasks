@@ -21,21 +21,24 @@ export default function TaskList({ listID, subList }) {
   const updateList = useCallback(
     (newTask) => {
       let findTaskByID = (task) => task.id === newTask.id;
-      let listIndex = subListTasks.findIndex(findTaskByID);
+      let listIndex = taskList.findIndex(findTaskByID);
 
       // Add new task
       if (listIndex === -1) {
         setTaskList([...taskList, newTask]);
+
         updateTaskList(listID, id, [...taskList, newTask]);
       }
 
       // Update existing task
       if (listIndex >= 0) {
-        taskList[listIndex].taskTitle = newTask.taskTitle;
-        taskList[listIndex].taskFinished = newTask.taskFinished;
+        const copyList = [...taskList];
 
-        setTaskList(taskList);
-        updateTaskList(listID, id, taskList);
+        copyList[listIndex].taskTitle = newTask.taskTitle;
+        copyList[listIndex].taskFinished = newTask.taskFinished;
+
+        setTaskList(copyList);
+        updateTaskList(listID, id, copyList);
       }
     },
     [taskList]

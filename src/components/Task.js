@@ -25,9 +25,9 @@ export default function Task({ content, isInputEmpty, newTask, updateList }) {
       taskFinished: completed,
     };
 
-    if (title !== taskTitle && type === "title") {
+    if (title !== taskTitle) {
       updateList(task);
-    } else if (type === "status") {
+    } else {
       const task = { id, taskTitle, taskFinished: !completed };
 
       updateList(task);
@@ -37,7 +37,7 @@ export default function Task({ content, isInputEmpty, newTask, updateList }) {
 
   return (
     <View style={[styles.todoContainer, { opacity: completed ? 0.5 : 1 }]}>
-      <TouchableOpacity onPress={() => updateTask("status")}>
+      <TouchableOpacity onPress={() => updateTask()}>
         <Feather
           name={completed ? "check-square" : "square"}
           size={24}
@@ -50,7 +50,7 @@ export default function Task({ content, isInputEmpty, newTask, updateList }) {
         spellCheck={false}
         ref={textInputReference}
         onChangeText={(text) => setTitle(text)}
-        onEndEditing={() => updateTask("title")}
+        onEndEditing={() => updateTask()}
         onFocus={() => newTask === true && setFocused(true)}
         onBlur={() => newTask === true && setFocused(false)}
         style={[
