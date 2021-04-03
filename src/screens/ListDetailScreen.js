@@ -58,6 +58,7 @@ export default function ListDetailScreen({ navigation, route }) {
         <AddSubListModal
           listID={id}
           navigation={navigation}
+          defaultColor={listColor}
           closeModal={() => {
             setModalVisible(false);
             getSubLists(id).then((res) => setSubLists(res));
