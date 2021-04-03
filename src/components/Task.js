@@ -36,9 +36,9 @@ export default function Task(props) {
       taskFinished: completed,
     };
 
-    if (title !== taskTitle) {
+    if (title !== taskTitle && newTask === true) {
       updateList(task);
-    } else {
+    } else if (completed !== taskFinished) {
       const task = {
         id,
         taskTitle,
