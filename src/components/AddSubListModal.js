@@ -9,36 +9,34 @@ import {
   TextInput,
 } from "react-native";
 import { addSubList } from "../firebase/api";
-import { useNavigation } from "@react-navigation/native";
 
 export default function AddSubListModal(props) {
-  const { listID, closeModal } = props;
+  const { listID, defaultColor, closeModal } = props;
 
-  const backgroundColors = [
-    "#5CD859",
-    "#24A6D9",
-    "#595BD9",
-    "#8022D0",
-    "#D159D8",
-    "#D85963",
-    "#D88559",
-  ];
+  // const backgroundColors = [
+  //   "#5CD859",
+  //   "#24A6D9",
+  //   "#595BD9",
+  //   "#8022D0",
+  //   "#D159D8",
+  //   "#D85963",
+  //   "#D88559",
+  // ];
 
-  const navigation = useNavigation();
   const [subListTitle, setSubListTitle] = useState("");
-  const [subListColor, setSubListColor] = useState(backgroundColors[0]);
+  const [subListColor, setSubListColor] = useState(defaultColor);
 
-  function renderColors() {
-    return backgroundColors.map((color) => {
-      return (
-        <TouchableOpacity
-          key={color}
-          style={[styles.colorSelect, { backgroundColor: color }]}
-          onPress={() => setSubListColor(color)}
-        />
-      );
-    });
-  }
+  // function renderColors() {
+  //   return backgroundColors.map((color) => {
+  //     return (
+  //       <TouchableOpacity
+  //         key={color}
+  //         style={[styles.colorSelect, { backgroundColor: color }]}
+  //         onPress={() => setSubListColor(color)}
+  //       />
+  //     );
+  //   });
+  // }
 
   return (
     <KeyboardAvoidingView
@@ -54,11 +52,10 @@ export default function AddSubListModal(props) {
         <Text style={styles.label}>Name</Text>
         <TextInput
           value={subListTitle}
-          placeholder="Checklist:"
           onChangeText={(text) => setSubListTitle(text)}
           style={styles.input}
         />
-        <View style={styles.colorList}>{renderColors()}</View>
+        {/* <View style={styles.colorList}>{renderColors()}</View> */}
         <TouchableOpacity
           style={[styles.button, { backgroundColor: subListColor }]}
           onPress={() => {
