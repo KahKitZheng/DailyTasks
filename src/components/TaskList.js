@@ -18,20 +18,21 @@ export default function TaskList({ listID, subList }) {
   const taskCount = taskList.length;
   const taskCompleted = taskList.filter((task) => task.taskFinished).length;
 
+  const isInputEmpty = (value) => {
+    value === true ? setTodoVisible(false) : setTodoVisible(true);
+  };
+
   const updateList = useCallback(
     (newTask) => {
-      let findTaskByID = (task) => task.id === newTask.id;
-      let listIndex = taskList.findIndex(findTaskByID);
+      const findTaskByID = (task) => task.id === newTask.id;
+      const listIndex = taskList.findIndex(findTaskByID);
 
-      // Add new task
+      // Add new task if task does not exist in the list
       if (listIndex === -1) {
         setTaskList([...taskList, newTask]);
-
         updateTaskList(listID, id, [...taskList, newTask]);
-      }
-
-      // Update existing task
-      if (listIndex >= 0) {
+      } else {
+        // Else update existing task
         const copyList = [...taskList];
 
         copyList[listIndex].taskTitle = newTask.taskTitle;
@@ -44,9 +45,13 @@ export default function TaskList({ listID, subList }) {
     [taskList]
   );
 
-  function isInputEmpty(value) {
-    value === true ? setTodoVisible(false) : setTodoVisible(true);
-  }
+  const deleteFromList = (taskID) => {
+    const copyList = [...taskList];
+    const updatedList = copyList.filter((task) => task.id !== taskID);
+
+    setTaskList(updatedList);
+    updateTaskList(listID, id, updatedList);
+  };
 
   return (
     <View style={styles.container}>
@@ -71,7 +76,11 @@ export default function TaskList({ listID, subList }) {
           data={taskList}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <Task content={item} updateList={updateList} />
+            <Task
+              content={item}
+              updateList={updateList}
+              deleteFromList={deleteFromList}
+            />
           )}
         />
         <TouchableWithoutFeedback onPress={() => setTodoVisible(true)}>
@@ -79,9 +88,9 @@ export default function TaskList({ listID, subList }) {
             <View style={{ minHeight: 50 }} />
           ) : (
             <Task
+              newTask={true}
               content={{ taskTitle: "", taskFinished: false }}
               isInputEmpty={isInputEmpty}
-              newTask={true}
               updateList={updateList}
             />
           )}

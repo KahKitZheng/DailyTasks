@@ -11,14 +11,14 @@ export default function ListCard(props) {
   const [cardWidth, setCardWidth] = useState(0);
   const [cardHeight, setCardHeight] = useState(0);
 
-  function getCardSize(event) {
+  const getCardSize = (event) => {
     const { width, height } = event.nativeEvent.layout;
 
     setCardWidth(width);
     setCardHeight(height - 6);
-  }
+  };
 
-  const renderLeftActions = () => (
+  const renderRightActions = () => (
     <BaseButton rippleColor="#fff" onPress={() => props.handleDeleteList(id)}>
       <View style={styles.iconDelete}>
         <Ionicons name="close-sharp" size={24} color={"#000"} />
@@ -26,24 +26,22 @@ export default function ListCard(props) {
     </BaseButton>
   );
 
+  const sendListDetails = () =>
+    props.navigation.navigate("List Details", {
+      id,
+      listTitle: title,
+      listColor: color,
+    });
+
   return (
-    <Swipeable renderRightActions={renderLeftActions}>
+    <Swipeable renderRightActions={renderRightActions}>
       <Shadow
         startColor="#00000010"
         distance={8}
         offset={[24, 7]}
         size={[cardWidth, cardHeight]}
       >
-        <TouchableOpacity
-          activeOpacity={0.4}
-          onPress={() =>
-            props.navigation.navigate("List Details", {
-              id,
-              listTitle: title,
-              listColor: color,
-            })
-          }
-        >
+        <TouchableOpacity activeOpacity={0.4} onPress={() => sendListDetails()}>
           <View style={styles.wrapper}>
             <View
               style={[
