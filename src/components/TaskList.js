@@ -8,10 +8,11 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import Task from "./Task";
-import { updateTaskList } from "../firebase/api";
+import { updateTaskListTitle, updateTaskList } from "../firebase/api";
 
 export default function TaskList({ listID, subList }) {
   const { id, subListTitle, subListColor, subListTasks } = subList;
+  const [taskListTitle, setTaskListTitle] = useState(subListTitle);
   const [taskList, setTaskList] = useState(subListTasks);
   const [todoVisible, setTodoVisible] = useState(false);
 
@@ -21,6 +22,8 @@ export default function TaskList({ listID, subList }) {
   const isInputEmpty = (value) => {
     value === true ? setTodoVisible(false) : setTodoVisible(true);
   };
+
+  const updateTitle = () => updateTaskListTitle(listID, id, taskListTitle);
 
   const updateList = useCallback(
     (newTask) => {
@@ -59,12 +62,14 @@ export default function TaskList({ listID, subList }) {
         <TextInput
           autoCorrect={false}
           spellCheck={false}
+          onChangeText={(text) => setTaskListTitle(text)}
+          onEndEditing={() => updateTitle()}
           style={[
             styles.title,
             { color: subListColor ? subListColor : "#000" },
           ]}
         >
-          {subListTitle}
+          {taskListTitle}
         </TextInput>
         <Text style={styles.numberOfTasks}>
           {taskCompleted}/{taskCount}

@@ -90,6 +90,9 @@ export const deleteList = async (listID) => {
     .delete();
 };
 
+/**
+ * Retrieve all tasks in a list
+ */
 export const getSubLists = async (listID) => {
   let fetchSubLists = [];
   const currentUser = firebase.auth().currentUser;
@@ -133,6 +136,23 @@ export const addSubList = async (listID, newSubList) => {
       createdAt: now.seconds,
       updatedAt: now.seconds,
     });
+};
+
+/**
+ * Update the title of a subList
+ */
+export const updateTaskListTitle = async (listID, taskListID, title) => {
+  const currentUser = firebase.auth().currentUser;
+  const now = firebase.firestore.Timestamp.now();
+
+  return await db
+    .collection("users")
+    .doc(currentUser.uid)
+    .collection("lists")
+    .doc(listID)
+    .collection("subLists")
+    .doc(taskListID)
+    .update({ subListTitle: title, updatedAt: now.seconds });
 };
 
 /**
