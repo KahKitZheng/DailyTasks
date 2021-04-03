@@ -18,8 +18,12 @@ export default function ListScreen({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
-    getUserList().then((res) => setUserLists(res));
-  }, []);
+    const unsubscribe = navigation.addListener("focus", () => {
+      getUserList().then((res) => setUserLists(res));
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -46,7 +50,7 @@ export default function ListScreen({ navigation }) {
 
   // TODO: Show placeholder for empty lists, i.e. point the add icon
   return (
-    <Layout title="Your lists" header={true}>
+    <Layout title="Your lists" header={true} pointerEvents="box-none">
       <Modal
         animationType="slide"
         visible={modalVisible}

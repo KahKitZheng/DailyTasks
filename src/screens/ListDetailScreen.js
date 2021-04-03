@@ -49,7 +49,13 @@ export default function ListDetailScreen({ navigation, route }) {
   }, [navigation, listColor]);
 
   return (
-    <Layout title={listTitle} bgColor={listColor} header={true}>
+    <Layout
+      title={listTitle}
+      bgColor={listColor}
+      header={true}
+      pointerEvents="auto"
+      idToUpdate={id}
+    >
       <Modal
         animationType="slide"
         visible={modalVisible}

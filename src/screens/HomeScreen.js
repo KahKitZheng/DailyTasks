@@ -15,7 +15,11 @@ export default function HomeScreen() {
   }, []);
 
   return (
-    <Layout title={`Hello, ${displayName}`} underTitle={today}>
+    <Layout
+      title={`Hello, ${displayName}`}
+      underTitle={today}
+      pointerEvents="none"
+    >
       <View style={styles.container}>
         <Text>:D</Text>
       </View>

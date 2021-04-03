@@ -77,6 +77,21 @@ export const addList = async (list) => {
 };
 
 /**
+ * Update a list title
+ */
+export const updateListTitle = async (listID, title) => {
+  const currentUser = firebase.auth().currentUser;
+  const now = firebase.firestore.Timestamp.now();
+
+  return await db
+    .collection("users")
+    .doc(currentUser.uid)
+    .collection("lists")
+    .doc(listID)
+    .update({ title, updateAt: now });
+};
+
+/**
  * Delete the list in the user's list collection
  */
 export const deleteList = async (listID) => {
