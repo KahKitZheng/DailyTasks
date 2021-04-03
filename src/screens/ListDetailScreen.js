@@ -8,7 +8,7 @@ import {
   Pressable,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import { getSubLists } from "../firebase/api";
+import { getSubLists, deleteSublist } from "../firebase/api";
 import Layout from "./Layout";
 import TaskList from "../components/TaskList";
 import AddSubListModal from "../components/AddSubListModal";
@@ -48,6 +48,14 @@ export default function ListDetailScreen({ navigation, route }) {
     });
   }, [navigation, listColor]);
 
+  const deleteTaskList = (listID, taskListID) => {
+    const copyList = [...subLists];
+    const newList = copyList.filter((list) => list.id !== taskListID);
+
+    setSubLists(newList);
+    deleteSublist(listID, taskListID);
+  };
+
   return (
     <Layout
       title={listTitle}
@@ -82,7 +90,13 @@ export default function ListDetailScreen({ navigation, route }) {
           data={subLists}
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => <TaskList listID={id} subList={item} />}
+          renderItem={({ item }) => (
+            <TaskList
+              listID={id}
+              subList={item}
+              deleteTaskList={deleteTaskList}
+            />
+          )}
           contentContainerStyle={{
             marginTop: 30,
             paddingBottom: 30,

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Swipeable from "react-native-gesture-handler/Swipeable";
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { Shadow } from "react-native-shadow-2";
 import { Ionicons } from "@expo/vector-icons";
 import { BaseButton } from "react-native-gesture-handler";
@@ -18,6 +18,13 @@ export default function ListCard(props) {
     setCardHeight(height - 6);
   };
 
+  const sendListDetails = () =>
+    props.navigation.navigate("List Details", {
+      id,
+      listTitle: title,
+      listColor: color,
+    });
+
   const renderRightActions = () => (
     <BaseButton rippleColor="#fff" onPress={() => props.handleDeleteList(id)}>
       <View style={styles.iconDelete}>
@@ -25,13 +32,6 @@ export default function ListCard(props) {
       </View>
     </BaseButton>
   );
-
-  const sendListDetails = () =>
-    props.navigation.navigate("List Details", {
-      id,
-      listTitle: title,
-      listColor: color,
-    });
 
   return (
     <Swipeable renderRightActions={renderRightActions}>
@@ -41,7 +41,10 @@ export default function ListCard(props) {
         offset={[24, 7]}
         size={[cardWidth, cardHeight]}
       >
-        <TouchableOpacity activeOpacity={0.4} onPress={() => sendListDetails()}>
+        <TouchableWithoutFeedback
+          activeOpacity={0.4}
+          onPress={() => sendListDetails()}
+        >
           <View style={styles.wrapper}>
             <View
               style={[
@@ -61,7 +64,7 @@ export default function ListCard(props) {
               </Text>
             </View>
           </View>
-        </TouchableOpacity>
+        </TouchableWithoutFeedback>
       </Shadow>
     </Swipeable>
   );

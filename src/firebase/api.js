@@ -153,6 +153,19 @@ export const addSubList = async (listID, newSubList) => {
     });
 };
 
+export const deleteSublist = async (listID, taskListID) => {
+  const currentUser = firebase.auth().currentUser;
+
+  return await db
+    .collection("users")
+    .doc(currentUser.uid)
+    .collection("lists")
+    .doc(listID)
+    .collection("subLists")
+    .doc(taskListID)
+    .delete();
+};
+
 /**
  * Update the title of a subList
  */
