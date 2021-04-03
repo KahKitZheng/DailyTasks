@@ -87,13 +87,7 @@ export const deleteList = async (listID) => {
     .doc(currentUser.uid)
     .collection("lists")
     .doc(listID)
-    .delete()
-    .then(() => {
-      console.log(`Successfully deleted: ${listID}`);
-    })
-    .catch((error) => {
-      console.error(`Error removing document: ${listID}`, error);
-    });
+    .delete();
 };
 
 export const getSubLists = async (listID) => {
@@ -111,13 +105,13 @@ export const getSubLists = async (listID) => {
       querySnapshot.forEach((doc) => {
         fetchSubLists.push({ id: doc.id, ...doc.data() });
       });
-
-      console.log(`Fetch subList of ID: ${listID}`);
-
       return fetchSubLists;
     });
 };
 
+/**
+ * Create a new subList document
+ */
 export const addSubList = async (listID, newSubList) => {
   const { subListTitle, subListColor } = newSubList;
 
@@ -138,15 +132,13 @@ export const addSubList = async (listID, newSubList) => {
       subListTasks: [],
       createdAt: now.seconds,
       updatedAt: now.seconds,
-    })
-    .then(() => {
-      console.log(`Successfully added subList with ID of: ${uuid}`);
-    })
-    .catch((error) => {
-      console.error(`Error adding subList: ${uuid}`, error);
     });
 };
 
+/**
+ * It updates the subListTasks property of a subList document.
+ * Used for adding new tasks, updating existing tasks or removing it.
+ */
 export const updateTaskList = async (listID, taskListID, updatedTaskList) => {
   const currentUser = firebase.auth().currentUser;
   const now = firebase.firestore.Timestamp.now();
@@ -161,11 +153,5 @@ export const updateTaskList = async (listID, taskListID, updatedTaskList) => {
     .update({
       subListTasks: updatedTaskList,
       updatedAt: now.seconds,
-    })
-    .then(() => {
-      console.log(`Successfully updated taskList with ID of: ${taskListID}`);
-    })
-    .catch((error) => {
-      console.error(`Error adding taskList: ${taskListID}`, error);
     });
 };
