@@ -48,9 +48,8 @@ export default function ListScreen({ navigation }) {
     setUserLists(filtered);
   }
 
-  // TODO: Show placeholder for empty lists, i.e. point the add icon
   return (
-    <Layout title="Your lists" header={true} pointerEvents="box-none">
+    <Layout title="Your lists" header={true} pointerEvents="none">
       <Modal
         animationType="slide"
         visible={modalVisible}

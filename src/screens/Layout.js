@@ -21,10 +21,16 @@ export default function Layout(props) {
   } = props;
 
   const [screenTitle, setScreenTitle] = useState(title);
+  const [textFieldWidth, setTextFieldWidth] = useState(0);
 
   const handleTitleUpdate = () => {
     const listID = idToUpdate;
     updateListTitle(listID, screenTitle);
+  };
+
+  const getCardSize = (event) => {
+    const { width } = event.nativeEvent.layout;
+    setTextFieldWidth(width);
   };
 
   return (
@@ -38,13 +44,20 @@ export default function Layout(props) {
           { backgroundColor: bgColor ? bgColor : "#FFCD2D" },
         ]}
       >
-        <View style={styles.header} pointerEvents={pointerEvents}>
+        <View
+          style={styles.header}
+          pointerEvents={pointerEvents}
+          onLayout={(event) => getCardSize(event)}
+        >
           {underTitle && <Text style={styles.underTitle}>{underTitle}</Text>}
           <TextInput
             editable={pointerEvents === "box-none" ? false : true}
             onChangeText={(text) => setScreenTitle(text)}
             onEndEditing={() => handleTitleUpdate()}
-            style={styles.title}
+            multiline={true}
+            numberOfLines={2}
+            maxLength={44}
+            style={[styles.title, { width: textFieldWidth }]}
           >
             {pointerEvents === "none" ? title : screenTitle}
           </TextInput>
@@ -60,27 +73,26 @@ export default function Layout(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: Platform.OS === "android" ? 56 : 0,
+    paddingTop: Platform.OS === "android" ? 42 : 0,
   },
   header: {
     flex: 1,
     alignItems: "flex-start",
     justifyContent: "flex-end",
-    paddingHorizontal: 12,
-    paddingBottom: 4,
+    marginVertical: 8,
   },
   title: {
-    fontSize: 36,
+    fontSize: 32,
     fontFamily: "Roboto",
     fontWeight: "bold",
-    paddingHorizontal: 8,
-    color: "#000",
-    minHeight: 60,
+    paddingHorizontal: 20,
+    minHeight: 78,
   },
   underTitle: {
     fontSize: 16,
     fontFamily: "Roboto",
-    paddingHorizontal: 8,
+    paddingHorizontal: 20,
+    marginBottom: -12,
   },
   main: {
     flex: 5,

@@ -24,8 +24,7 @@ export default function AddListModal({ closeModal }) {
   const [listTitle, setListTitle] = useState("");
   const [listDescription, setListDescription] = useState("");
   const [listColor, setListColor] = useState(backgroundColors[0]);
-
-  const [height, setHeight] = useState(0);
+  // const [height, setHeight] = useState(0);
 
   function renderColors() {
     return backgroundColors.map((color) => {
@@ -63,16 +62,16 @@ export default function AddListModal({ closeModal }) {
           onChangeText={(text) => setListTitle(text)}
           style={styles.input}
         />
-        <Text style={styles.label}>Description</Text>
+        {/* <Text style={styles.label}>Description</Text>
         <TextInput
           value={listDescription}
-          onContentSizeChange={(event) => {
-            setHeight(event.nativeEvent.contentSize.height);
-          }}
           onChangeText={(text) => setListDescription(text)}
           multiline={true}
           style={[styles.input, { height: Math.max(50, height) }]}
-        />
+          onContentSizeChange={(event) => {
+            setHeight(event.nativeEvent.contentSize.height);
+          }}
+        /> */}
         <View style={styles.colorList}>{renderColors()}</View>
         <TouchableOpacity
           style={[styles.button, { backgroundColor: listColor }]}
