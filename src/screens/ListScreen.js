@@ -7,15 +7,24 @@ import {
   Modal,
   FlatList,
 } from "react-native";
-import { Feather } from "@expo/vector-icons";
 import Layout from "./Layout";
 import ListCard from "../components/ListCard";
 import AddListModal from "../components/AddListModal";
-import { getUserList, deleteList } from "../firebase/api";
+import { Feather } from "@expo/vector-icons";
+import { getToday } from "../utils/date";
+import { getUserFromFireStore, getUserList, deleteList } from "../firebase/api";
 
 export default function ListScreen({ navigation }) {
+  const [displayName, setDisplayName] = useState("");
   const [userLists, setUserLists] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const today = getToday();
+
+  useEffect(() => {
+    getUserFromFireStore().then((user) => {
+      setDisplayName(user.displayName);
+    });
+  }, []);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
@@ -49,7 +58,12 @@ export default function ListScreen({ navigation }) {
   }
 
   return (
-    <Layout title="Your lists" header={true} pointerEvents="none">
+    <Layout
+      title={`Hello, ${displayName}`}
+      underTitle={today}
+      header={true}
+      pointerEvents="none"
+    >
       <Modal
         animationType="slide"
         visible={modalVisible}

@@ -4,8 +4,10 @@ import { StatusBar } from "expo-status-bar";
 
 // Import navigation modules
 import { NavigationContainer } from "@react-navigation/native";
-import { AuthNavigation } from "./src/navigation/StackNavigator";
-import BottomTabNavigator from "./src/navigation/TabNavigator";
+import {
+  AuthNavigation,
+  TodoNavigation,
+} from "./src/navigation/StackNavigator";
 
 // Import Firebase libraries
 import * as firebase from "firebase";
@@ -123,7 +125,7 @@ export default function App() {
     <AuthContext.Provider value={authContext}>
       <StatusBar style="auto" />
       <NavigationContainer>
-        {state.user == null ? <AuthNavigation /> : <BottomTabNavigator />}
+        {state.user == null ? <AuthNavigation /> : <TodoNavigation />}
       </NavigationContainer>
     </AuthContext.Provider>
   );
