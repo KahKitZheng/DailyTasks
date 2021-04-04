@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: "Roboto",
     paddingHorizontal: 20,
-    marginBottom: -12,
+    marginBottom: -16,
   },
   main: {
     flex: 5,
