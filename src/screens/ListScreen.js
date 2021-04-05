@@ -15,6 +15,9 @@ import { getToday } from "../utils/date";
 import { getUserFromFireStore, getUserList, deleteList } from "../firebase/api";
 
 export default function ListScreen({ navigation }) {
+  const [dataFetched, setDataFetched] = useState(false);
+  const [renderScreen, setRenderScreen] = useState(false);
+
   const [displayName, setDisplayName] = useState("");
   const [userLists, setUserLists] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -23,8 +26,11 @@ export default function ListScreen({ navigation }) {
   useEffect(() => {
     getUserFromFireStore().then((user) => {
       setDisplayName(user.displayName);
+      setDataFetched(true);
     });
-  }, []);
+
+    dataFetched ? setRenderScreen(true) : null;
+  }, [dataFetched, renderScreen]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
@@ -76,7 +82,7 @@ export default function ListScreen({ navigation }) {
           }}
         />
       </Modal>
-      {userLists.length === 0 ? (
+      {renderScreen && userLists.length === 0 ? (
         <View style={styles.emptyPlaceholder}>
           <Text style={styles.placeholderText}>
             Use the + icon to add new lists
@@ -86,7 +92,7 @@ export default function ListScreen({ navigation }) {
         <FlatList
           data={userLists}
           keyExtractor={(item) => item.id}
-          contentContainerStyle={{ paddingVertical: 20, flexGrow: 1 }}
+          style={styles.cardList}
           renderItem={({ item }) => (
             <ListCard
               list={item}
@@ -101,6 +107,10 @@ export default function ListScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  cardList: {
+    paddingVertical: 20,
+    flexGrow: 1,
+  },
   emptyPlaceholder: {
     flex: 1,
     alignItems: "center",
