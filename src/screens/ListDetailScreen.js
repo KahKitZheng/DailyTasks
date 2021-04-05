@@ -14,16 +14,25 @@ import TaskList from "../components/TaskList";
 import AddSubListModal from "../components/AddSubListModal";
 
 export default function ListDetailScreen({ navigation, route }) {
+  const [dataFetched, setDataFetched] = useState(false);
+  const [renderScreen, setRenderScreen] = useState(false);
+
   const { id, listTitle, listColor } = route.params;
   const [subLists, setSubLists] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
-    getSubLists(id).then((res) => setSubLists(res));
-  }, [navigation, id]);
+    getSubLists(id).then((res) => {
+      setSubLists(res);
+      setDataFetched(true);
+    });
+
+    dataFetched ? setRenderScreen(true) : null;
+  }, [navigation, id, dataFetched]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
+      cardStyle: { backgroundColor: listColor },
       headerStyle: { elevation: 0, backgroundColor: listColor },
       headerLeft: () => (
         <Pressable onPress={() => navigation.goBack()}>
@@ -79,7 +88,7 @@ export default function ListDetailScreen({ navigation, route }) {
           }}
         />
       </Modal>
-      {subLists.length === 0 ? (
+      {renderScreen && subLists.length === 0 ? (
         <View style={styles.emptyPlaceholder}>
           <Text style={styles.placeholderText}>
             Use the + icon to add new lists
