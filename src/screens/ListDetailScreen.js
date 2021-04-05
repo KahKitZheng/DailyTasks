@@ -64,6 +64,14 @@ export default function ListDetailScreen({ navigation, route }) {
     deleteSublist(listID, taskListID);
   };
 
+  const taskListsStyling = () => {
+    return {
+      marginTop: 30,
+      paddingBottom: 30,
+      borderTopLeftRadius: 20,
+    };
+  };
+
   return (
     <Layout
       title={listTitle}
@@ -97,7 +105,7 @@ export default function ListDetailScreen({ navigation, route }) {
         <FlatList
           data={subLists}
           keyExtractor={(item) => item.id}
-          styling={styles.taskLists}
+          contentContainerStyle={taskListsStyling()}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
             <TaskList
@@ -123,11 +131,6 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     fontFamily: "Roboto",
     color: "#C0C0C0",
-  },
-  taskLists: {
-    marginTop: 30,
-    paddingBottom: 30,
-    borderTopLeftRadius: 20,
   },
   headerLeft: {
     paddingLeft: 16,
