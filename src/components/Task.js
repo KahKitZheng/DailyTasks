@@ -28,17 +28,25 @@ export default function Task(props) {
     </BaseButton>
   );
 
-  const updateTask = () => {
-    const uuid = uuidv4();
-    const task = {
-      id: id ? id : uuid,
-      taskTitle: title,
-      taskFinished: completed,
-    };
-
-    if (title !== taskTitle && newTask === true) {
-      updateList(task);
-    } else if (completed !== taskFinished) {
+  const updateTask = (type) => {
+    if (type === "TITLE") {
+      if (newTask === true) {
+        const uuid = uuidv4();
+        const task = {
+          id: uuid,
+          taskTitle: title,
+          taskFinished: completed,
+        };
+        updateList(task);
+      } else if (title !== taskTitle) {
+        const task = {
+          id: id,
+          taskTitle: title,
+          taskFinished,
+        };
+        updateList(task);
+      }
+    } else if (type === "COMPLETION") {
       const task = {
         id,
         taskTitle,
@@ -53,7 +61,7 @@ export default function Task(props) {
   return (
     <Swipeable renderRightActions={renderRightActions}>
       <View style={[styles.todoContainer, { opacity: completed ? 0.5 : 1 }]}>
-        <TouchableOpacity onPress={() => updateTask()}>
+        <TouchableOpacity onPress={() => updateTask("COMPLETION")}>
           <Feather
             name={completed ? "check-square" : "square"}
             size={24}
@@ -66,7 +74,7 @@ export default function Task(props) {
           spellCheck={false}
           ref={textInputReference}
           onChangeText={(text) => setTitle(text)}
-          onEndEditing={() => updateTask()}
+          onEndEditing={() => updateTask("TITLE")}
           onFocus={() => newTask && setFocused(true)}
           onBlur={() => newTask && setFocused(false)}
           style={[
