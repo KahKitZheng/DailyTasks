@@ -1,4 +1,4 @@
-export default firebaseConfig = {
+export const firebaseConfig = {
   apiKey: "",
   authDomain: "",
   projectId: "",
@@ -7,3 +7,5 @@ export default firebaseConfig = {
   appId: "",
   measurementId: "",
 };
+
+export default firebaseConfig;

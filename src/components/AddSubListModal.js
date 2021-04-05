@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import {
+  Platform,
   Text,
   View,
   StyleSheet,
@@ -12,31 +13,8 @@ import { addSubList } from "../firebase/api";
 
 export default function AddSubListModal(props) {
   const { listID, defaultColor, closeModal } = props;
-
-  // const backgroundColors = [
-  //   "#5CD859",
-  //   "#24A6D9",
-  //   "#595BD9",
-  //   "#8022D0",
-  //   "#D159D8",
-  //   "#D85963",
-  //   "#D88559",
-  // ];
-
   const [subListTitle, setSubListTitle] = useState("");
   const [subListColor, setSubListColor] = useState(defaultColor);
-
-  // function renderColors() {
-  //   return backgroundColors.map((color) => {
-  //     return (
-  //       <TouchableOpacity
-  //         key={color}
-  //         style={[styles.colorSelect, { backgroundColor: color }]}
-  //         onPress={() => setSubListColor(color)}
-  //       />
-  //     );
-  //   });
-  // }
 
   return (
     <KeyboardAvoidingView
@@ -55,7 +33,6 @@ export default function AddSubListModal(props) {
           onChangeText={(text) => setSubListTitle(text)}
           style={styles.input}
         />
-        {/* <View style={styles.colorList}>{renderColors()}</View> */}
         <TouchableOpacity
           style={[styles.button, { backgroundColor: subListColor }]}
           onPress={() => {

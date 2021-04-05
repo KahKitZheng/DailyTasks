@@ -49,7 +49,7 @@ export default function ListScreen({ navigation }) {
             name="plus"
             size={24}
             color="#000"
-            style={{ paddingRight: 12 }}
+            style={styles.headerRight}
           />
         </Pressable>
       ),
@@ -121,5 +121,8 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     fontFamily: "Roboto",
     color: "#C0C0C0",
+  },
+  headerRight: {
+    paddingRight: 12,
   },
 });

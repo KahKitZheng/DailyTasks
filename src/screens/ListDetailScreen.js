@@ -14,12 +14,11 @@ import TaskList from "../components/TaskList";
 import AddSubListModal from "../components/AddSubListModal";
 
 export default function ListDetailScreen({ navigation, route }) {
+  const { id, listTitle, listColor } = route.params;
   const [dataFetched, setDataFetched] = useState(false);
   const [renderScreen, setRenderScreen] = useState(false);
-
-  const { id, listTitle, listColor } = route.params;
-  const [subLists, setSubLists] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [subLists, setSubLists] = useState([]);
 
   useEffect(() => {
     getSubLists(id).then((res) => {
@@ -40,7 +39,7 @@ export default function ListDetailScreen({ navigation, route }) {
             name="arrow-left"
             size={24}
             color="#000"
-            style={{ paddingLeft: 16 }}
+            style={styles.headerLeft}
           />
         </Pressable>
       ),
@@ -50,7 +49,7 @@ export default function ListDetailScreen({ navigation, route }) {
             name="plus"
             size={24}
             color="#000"
-            style={{ paddingRight: 12 }}
+            style={styles.headerRight}
           />
         </Pressable>
       ),
@@ -98,6 +97,7 @@ export default function ListDetailScreen({ navigation, route }) {
         <FlatList
           data={subLists}
           keyExtractor={(item) => item.id}
+          styling={styles.taskLists}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
             <TaskList
@@ -106,11 +106,6 @@ export default function ListDetailScreen({ navigation, route }) {
               deleteTaskList={deleteTaskList}
             />
           )}
-          contentContainerStyle={{
-            marginTop: 30,
-            paddingBottom: 30,
-            borderTopLeftRadius: 20,
-          }}
         />
       )}
     </Layout>
@@ -128,5 +123,16 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     fontFamily: "Roboto",
     color: "#C0C0C0",
+  },
+  taskLists: {
+    marginTop: 30,
+    paddingBottom: 30,
+    borderTopLeftRadius: 20,
+  },
+  headerLeft: {
+    paddingLeft: 16,
+  },
+  headerRight: {
+    paddingRight: 12,
   },
 });

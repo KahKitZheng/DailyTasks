@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Platform,
   View,
   KeyboardAvoidingView,
   SafeAreaView,
@@ -33,17 +34,20 @@ export default function Layout(props) {
     setTextFieldWidth(width);
   };
 
+  const renderBackgroundColor = () => {
+    return { backgroundColor: bgColor ? bgColor : "#FFCD2D" };
+  };
+
+  const renderHeaderStyling = () => {
+    return { flex: header === true ? 18 : 5 };
+  };
+
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1 }}
+      style={styles.flex}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <SafeAreaView
-        style={[
-          styles.container,
-          { backgroundColor: bgColor ? bgColor : "#FFCD2D" },
-        ]}
-      >
+      <SafeAreaView style={[styles.container, renderBackgroundColor()]}>
         <View
           style={styles.header}
           pointerEvents={pointerEvents}
@@ -62,15 +66,16 @@ export default function Layout(props) {
             {pointerEvents === "none" ? title : screenTitle}
           </TextInput>
         </View>
-        <View style={[styles.main, { flex: header === true ? 18 : 5 }]}>
-          {children}
-        </View>
+        <View style={[styles.main, renderHeaderStyling()]}>{children}</View>
       </SafeAreaView>
     </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
+  flex: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     paddingTop: Platform.OS === "android" ? 42 : 0,

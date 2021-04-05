@@ -24,7 +24,6 @@ export default function AddListModal({ closeModal }) {
 
   const [listTitle, setListTitle] = useState("");
   const [listColor, setListColor] = useState(backgroundColors[0]);
-  // const [height, setHeight] = useState(0);
 
   function renderColors() {
     return backgroundColors.map((color) => {
@@ -40,7 +39,6 @@ export default function AddListModal({ closeModal }) {
 
   function createList() {
     const list = { listTitle, listColor };
-
     addList(list);
     closeModal();
   }

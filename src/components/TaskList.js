@@ -53,7 +53,7 @@ export default function TaskList({ listID, subList, deleteTaskList }) {
         updateTaskList(listID, id, copyList);
       }
     },
-    [taskList]
+    [id, listID, taskList]
   );
 
   const deleteFromList = (taskID) => {
@@ -72,6 +72,10 @@ export default function TaskList({ listID, subList, deleteTaskList }) {
     </BaseButton>
   );
 
+  const renderTitleColor = () => {
+    return { color: subListColor };
+  };
+
   return (
     <View style={styles.container}>
       <Swipeable renderRightActions={renderRightActions}>
@@ -81,10 +85,7 @@ export default function TaskList({ listID, subList, deleteTaskList }) {
             spellCheck={false}
             onChangeText={(text) => setTaskListTitle(text)}
             onEndEditing={() => updateTitle()}
-            style={[
-              styles.title,
-              { color: subListColor ? subListColor : "#000" },
-            ]}
+            style={[styles.title, renderTitleColor()]}
           >
             {taskListTitle}
           </TextInput>
@@ -107,7 +108,7 @@ export default function TaskList({ listID, subList, deleteTaskList }) {
           />
           <TouchableWithoutFeedback onPress={() => setTodoVisible(true)}>
             {todoVisible === false ? (
-              <View style={{ minHeight: 50 }} />
+              <View style={styles.hiddenTask} />
             ) : (
               <Task
                 newTask={true}
@@ -154,5 +155,8 @@ const styles = StyleSheet.create({
     height: 36,
     paddingLeft: 20,
     paddingBottom: 4,
+  },
+  hiddenTask: {
+    minHeight: 50,
   },
 });
