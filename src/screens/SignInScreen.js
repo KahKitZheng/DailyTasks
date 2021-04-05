@@ -19,7 +19,7 @@ const SignInScreen = ({ navigation }) => {
     <View style={styles.container}>
       <Text style={styles.title}> Sign In</Text>
 
-      <View style={{ alignSelf: "stretch", marginHorizontal: 32 }}>
+      <View style={styles.row}>
         <Text style={styles.label}>Email</Text>
         <TextInput
           style={styles.input}
@@ -29,7 +29,7 @@ const SignInScreen = ({ navigation }) => {
         />
       </View>
 
-      <View style={{ alignSelf: "stretch", marginHorizontal: 32 }}>
+      <View style={styles.row}>
         <Text style={styles.label}>Password</Text>
         <TextInput
           style={styles.input}
@@ -43,7 +43,7 @@ const SignInScreen = ({ navigation }) => {
         style={styles.button}
         onPress={() => signIn({ email, password })}
       >
-        <Text style={{ color: colors.white, fontWeight: "600" }}>sign in</Text>
+        <Text style={styles.buttonText}>sign in</Text>
       </TouchableOpacity>
 
       <View style={styles.signin}>
@@ -66,6 +66,10 @@ const styles = StyleSheet.create({
     fontSize: 36,
     fontWeight: "700",
     fontFamily: "Roboto",
+  },
+  row: {
+    alignSelf: "stretch",
+    marginHorizontal: 32,
   },
   label: {
     marginTop: 24,
@@ -95,6 +99,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     color: "#fff",
     backgroundColor: colors.blue,
+  },
+  buttonText: {
+    color: "#fff",
+    fontWeight: "600",
+    fontFamily: "Roboto",
   },
   link: {
     color: colors.blue,

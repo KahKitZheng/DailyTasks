@@ -20,7 +20,7 @@ const SignUpScreen = ({ navigation }) => {
     <View style={styles.container}>
       <Text style={styles.title}> Sign Up</Text>
 
-      <View style={{ alignSelf: "stretch", marginHorizontal: 32 }}>
+      <View style={styles.row}>
         <Text style={styles.label}>Display name</Text>
         <TextInput
           style={styles.input}
@@ -29,7 +29,7 @@ const SignUpScreen = ({ navigation }) => {
         />
       </View>
 
-      <View style={{ alignSelf: "stretch", marginHorizontal: 32 }}>
+      <View style={styles.row}>
         <Text style={styles.label}>Email</Text>
         <TextInput
           style={styles.input}
@@ -39,7 +39,7 @@ const SignUpScreen = ({ navigation }) => {
         />
       </View>
 
-      <View style={{ alignSelf: "stretch", marginHorizontal: 32 }}>
+      <View style={styles.row}>
         <Text style={styles.label}>Password</Text>
         <TextInput
           style={styles.input}
@@ -53,15 +53,7 @@ const SignUpScreen = ({ navigation }) => {
         style={styles.button}
         onPress={() => signUp({ displayName, email, password })}
       >
-        <Text
-          style={{
-            color: colors.white,
-            fontWeight: "600",
-            fontFamily: "Roboto",
-          }}
-        >
-          sign up
-        </Text>
+        <Text style={styles.buttonText}>sign up</Text>
       </TouchableOpacity>
 
       <View style={styles.signup}>
@@ -84,6 +76,10 @@ const styles = StyleSheet.create({
     fontSize: 36,
     fontWeight: "700",
     fontFamily: "Roboto",
+  },
+  row: {
+    alignSelf: "stretch",
+    marginHorizontal: 32,
   },
   label: {
     marginTop: 24,
@@ -113,6 +109,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     color: "#fff",
     backgroundColor: colors.blue,
+  },
+  buttonText: {
+    color: colors.white,
+    fontWeight: "600",
+    fontFamily: "Roboto",
   },
   link: {
     color: colors.blue,
