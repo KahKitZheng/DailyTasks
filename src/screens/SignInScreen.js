@@ -6,7 +6,6 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import colors from "../utils/colors";
 import { AuthContext } from "../context/authContext";
 
 const SignInScreen = ({ navigation }) => {
@@ -76,7 +75,7 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.blue,
+    borderColor: "#24A6D9",
     borderRadius: 6,
     height: 50,
     marginTop: 8,
@@ -98,7 +97,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     color: "#fff",
-    backgroundColor: colors.blue,
+    backgroundColor: "#24A6D9",
   },
   buttonText: {
     color: "#fff",
@@ -106,7 +105,7 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto",
   },
   link: {
-    color: colors.blue,
+    color: "#24A6D9",
     fontWeight: "700",
     fontFamily: "Roboto",
   },
