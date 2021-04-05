@@ -56,7 +56,7 @@ export const getUserList = async () => {
  * Add new list to the user's list collection
  */
 export const addList = async (list) => {
-  const { listTitle, listColor, listDescription } = list;
+  const { listTitle, listColor } = list;
 
   const uuid = uuidv4();
   const now = firebase.firestore.Timestamp.now();
@@ -70,7 +70,6 @@ export const addList = async (list) => {
     .set({
       title: listTitle,
       color: listColor,
-      description: listDescription,
       createdAt: now.seconds,
       updatedAt: now.seconds,
     });

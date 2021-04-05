@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import {
+  Platform,
   Text,
   View,
   StyleSheet,
@@ -22,7 +23,6 @@ export default function AddListModal({ closeModal }) {
   ];
 
   const [listTitle, setListTitle] = useState("");
-  const [listDescription, setListDescription] = useState("");
   const [listColor, setListColor] = useState(backgroundColors[0]);
   // const [height, setHeight] = useState(0);
 
@@ -39,7 +39,7 @@ export default function AddListModal({ closeModal }) {
   }
 
   function createList() {
-    const list = { listTitle, listDescription, listColor };
+    const list = { listTitle, listColor };
 
     addList(list);
     closeModal();
@@ -62,16 +62,6 @@ export default function AddListModal({ closeModal }) {
           onChangeText={(text) => setListTitle(text)}
           style={styles.input}
         />
-        {/* <Text style={styles.label}>Description</Text>
-        <TextInput
-          value={listDescription}
-          onChangeText={(text) => setListDescription(text)}
-          multiline={true}
-          style={[styles.input, { height: Math.max(50, height) }]}
-          onContentSizeChange={(event) => {
-            setHeight(event.nativeEvent.contentSize.height);
-          }}
-        /> */}
         <View style={styles.colorList}>{renderColors()}</View>
         <TouchableOpacity
           style={[styles.button, { backgroundColor: listColor }]}

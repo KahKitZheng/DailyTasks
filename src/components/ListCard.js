@@ -6,7 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { BaseButton } from "react-native-gesture-handler";
 
 export default function ListCard(props) {
-  const { id, title, color, description } = props.list;
+  const { id, title, color } = props.list;
 
   const [cardWidth, setCardWidth] = useState(0);
   const [cardHeight, setCardHeight] = useState(0);
@@ -59,9 +59,6 @@ export default function ListCard(props) {
               <Text style={styles.cardTitle} numberOfLines={1}>
                 {title}
               </Text>
-              <Text style={styles.cardDescription} numberOfLines={2}>
-                {description}
-              </Text>
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -98,11 +95,6 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontFamily: "Roboto",
     fontWeight: "700",
-  },
-  cardDescription: {
-    color: "#7F8A9D",
-    lineHeight: 18,
-    paddingTop: 4,
   },
   iconDelete: {
     alignItems: "center",
