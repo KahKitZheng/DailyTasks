@@ -13,13 +13,13 @@ import { addList } from "../firebase/api";
 
 export default function AddListModal({ closeModal }) {
   const backgroundColors = [
-    "#5CD859",
-    "#24A6D9",
-    "#595BD9",
-    "#8022D0",
-    "#D159D8",
+    "#FFCD2D",
     "#D85963",
-    "#D88559",
+    "#D159D8",
+    "#8022D0",
+    "#595BD9",
+    "#24A6D9",
+    "#5CD859",
   ];
 
   const [listTitle, setListTitle] = useState("");
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   buttonText: {
-    color: "#fff",
+    color: "#000",
     fontWeight: "600",
   },
 });
