@@ -58,9 +58,8 @@ export default function Layout(props) {
             editable={pointerEvents === "box-none" ? false : true}
             onChangeText={(text) => setScreenTitle(text)}
             onEndEditing={() => handleTitleUpdate()}
-            multiline={true}
             numberOfLines={2}
-            maxLength={44}
+            maxLength={20}
             style={[styles.title, { width: textFieldWidth }]}
           >
             {pointerEvents === "none" ? title : screenTitle}
