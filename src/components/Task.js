@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
   todo: {
     fontSize: 16,
     fontFamily: "Roboto",
+    width: "80%",
   },
   iconDelete: {
     alignItems: "center",
