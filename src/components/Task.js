@@ -58,14 +58,27 @@ export default function Task(props) {
     }
   };
 
+  const reduceOpacity = () => (completed ? { opacity: 0.5 } : { opacity: 1 });
+
+  // Take either "checkbox" or "text" as argument and returns styling for the completed variant.
+  const styleCompleteTask = (type) => {
+    if (completed && type === "checkbox") {
+      return { color: "#7F8A9D" };
+    }
+
+    if (completed && type === "text") {
+      return { textDecorationLine: "line-through", color: "#7F8A9D" };
+    }
+  };
+
   return (
     <Swipeable renderRightActions={renderRightActions}>
-      <View style={[styles.todoContainer, { opacity: completed ? 0.5 : 1 }]}>
+      <View style={[styles.todoContainer, reduceOpacity()]}>
         <TouchableOpacity onPress={() => updateTask("COMPLETION")}>
           <Feather
             name={completed ? "check-square" : "square"}
             size={24}
-            style={{ width: 44, color: completed ? "#7F8A9D" : "#000" }}
+            style={[styles.todoCheckbox, styleCompleteTask("checkBox")]}
           />
         </TouchableOpacity>
         <TextInput
@@ -77,13 +90,7 @@ export default function Task(props) {
           onEndEditing={() => updateTask("TITLE")}
           onFocus={() => newTask && setFocused(true)}
           onBlur={() => newTask && setFocused(false)}
-          style={[
-            styles.todo,
-            {
-              textDecorationLine: completed ? "line-through" : "none",
-              color: completed ? "#7F8A9D" : "#000",
-            },
-          ]}
+          style={[styles.todo, styleCompleteTask("text")]}
         >
           {taskTitle}
         </TextInput>
@@ -98,9 +105,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingVertical: 8,
   },
+  todoCheckbox: {
+    width: 44,
+    color: "#000",
+  },
   todo: {
     fontSize: 16,
     fontFamily: "Roboto",
+    textDecorationLine: "none",
+    color: "#000",
     width: "80%",
   },
   iconDelete: {
