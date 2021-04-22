@@ -20,13 +20,14 @@ export default function Task(props) {
     }
   }, [isFocused, isInputEmpty, newTask, taskTitle]);
 
-  const renderRightActions = () => (
-    <BaseButton rippleColor="#fff" onPress={() => deleteFromList(id)}>
-      <View style={styles.iconDelete}>
-        <Ionicons name="close-sharp" size={24} color={"#000"} />
-      </View>
-    </BaseButton>
-  );
+  const renderRightActions = () =>
+    newTask ? null : (
+      <BaseButton rippleColor="#fff" onPress={() => deleteFromList(id)}>
+        <View style={styles.iconDelete}>
+          <Ionicons name="close-sharp" size={24} color={"#000"} />
+        </View>
+      </BaseButton>
+    );
 
   const updateTask = (type) => {
     if (type === "TITLE") {
