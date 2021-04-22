@@ -43,10 +43,7 @@ export default function Layout(props) {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={styles.flex}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
+    <KeyboardAvoidingView style={styles.flex}>
       <SafeAreaView style={[styles.container, renderBackgroundColor()]}>
         <View
           style={styles.header}

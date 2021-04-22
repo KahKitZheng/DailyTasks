@@ -107,6 +107,7 @@ export default function ListDetailScreen({ navigation, route }) {
           keyExtractor={(item) => item.id}
           contentContainerStyle={taskListsStyling()}
           showsVerticalScrollIndicator={false}
+          removeClippedSubviews={false}
           renderItem={({ item }) => (
             <TaskList
               listID={id}
