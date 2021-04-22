@@ -30,7 +30,7 @@ export default function Task(props) {
 
   const updateTask = (type) => {
     if (type === "TITLE") {
-      if (newTask === true) {
+      if (newTask === true && title !== "") {
         const uuid = uuidv4();
         const task = {
           id: uuid,
