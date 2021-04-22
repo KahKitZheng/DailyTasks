@@ -33,7 +33,6 @@ const SignUpScreen = ({ navigation }) => {
         <TextInput
           style={styles.input}
           onChangeText={(text) => setEmail(text)}
-          autoCompleteType="email"
           value={email}
         />
       </View>
