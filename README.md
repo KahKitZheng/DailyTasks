@@ -3,9 +3,9 @@
 A basic Android to-do app using React Native and Expo.
 
 <div float="left">
-  <img src="./assets/dailytask_list.png" width="295" />
-  <img src="./assets/dailytask_list_details.png" width="295" />
-  <img src="./assets/dailytask_list_details_delete.png" width="295" />
+  <img src="./assets/dailytask_list.png" width="280" />
+  <img src="./assets/dailytask_list_details.png" width="280" />
+  <img src="./assets/dailytask_list_details_delete.png" width="280" />
 </div>
 
 ----
